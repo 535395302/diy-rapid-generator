@@ -9,7 +9,8 @@ import java.util.*;
 public class ${className} implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	<#list table.columns as column>
+	<#list table.columns as column><#if (column.remarks?length>0)>
+	/** ${column.remarks} */</#if>
 	private ${column.javaType} ${column.columnNameLower};
 
 	</#list>
