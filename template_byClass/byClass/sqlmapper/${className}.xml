@@ -8,8 +8,8 @@
     
     
     <resultMap class="${className}" id="baseMap">
-        <#list clazz.fieldNames as fieldName>
-        <result field="${fieldName}" property="${fieldName}"/>
+        <#list clazz.fields as field>
+        <result field="${field.fieldName}" property="${field.fieldName}"/>
         </#list>
     </resultMap>
 
@@ -23,25 +23,29 @@
             resultClass="${className}">
         SELECT * FROM ${className}
         WHERE
-            <#list clazz.fieldNames as field>
-              <#if field==clazz.fieldNames[0]>
-            ${field} = #${field}#
+            <#list clazz.fields as field>
+              <#if field==clazz.fields[0]>
+            ${field.fieldName} = #${field.fieldName}#
               </#if>
             </#list>
     </select>
 
     <insert id="insert" parameterClass="${className}" >
         INSERT INTO ${className} (
-<#list clazz.fieldNames as fieldName>
-            ${fieldName}  <#if fieldName_has_next>,</#if>
+<#list clazz.fields as field>
+        <#if field != clazz.fields[0]>
+            ${field.fieldName}  <#if field_has_next>,</#if>
+        </#if>
 </#list>
         ) VALUES (
-<#list clazz.fieldNames as fieldName>
-            #${fieldName}#  <#if fieldName_has_next>,</#if>
+<#list clazz.fields as field>
+        <#if field != clazz.fields[0]>
+            #${field.fieldName}#  <#if field_has_next>,</#if>
+        </#if>
 </#list>
         )
         <selectKey resultClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>"
-                   keyProperty="<#list clazz.fieldNames as fieldName><#if fieldName==clazz.fieldNames[0]>${fieldName}</#if></#list>">
+                   keyProperty="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.fieldName}</#if></#list>">
             select last_insert_id()
         </selectKey>
     </insert>
@@ -49,15 +53,15 @@
     <update id="updateByPK" parameterClass="${className}" >
         UPDATE ${className}
         SET
-<#list clazz.fieldNames as fieldName>
-    <#if fieldName!=clazz.fieldNames[0]>
-          ${fieldName} = #${fieldName}# <#if fieldName_has_next>,</#if>
+<#list clazz.fields as field>
+    <#if field!=clazz.fields[0]>
+          ${field.fieldName} = #${field.fieldName}# <#if field_has_next>,</#if>
     </#if>
 </#list>
         WHERE
-<#list clazz.fieldNames as fieldName>
-    <#if fieldName==clazz.fieldNames[0]>
-          ${fieldName} = #${fieldName}#
+<#list clazz.fields as field>
+    <#if field==clazz.fields[0]>
+          ${field.fieldName} = #${field.fieldName}#
     </#if>
 </#list>
         </update>
@@ -65,9 +69,9 @@
     <delete id="delete" parameterClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>" >
         DELETE FROM ${className}
         WHERE
-<#list clazz.fieldNames as fieldName>
-    <#if fieldName==clazz.fieldNames[0]>
-            ${fieldName} = #${fieldName}#
+<#list clazz.fields as field>
+    <#if field==clazz.fields[0]>
+            ${field.fieldName} = #${field.fieldName}#
     </#if>
 </#list>
     </delete>
