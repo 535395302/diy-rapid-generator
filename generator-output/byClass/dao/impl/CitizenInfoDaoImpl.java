@@ -55,7 +55,7 @@ public class CitizenInfoDaoImpl extends IbatisEntityDao<CitizenInfo> implements 
 	 * @Description: 查询
 	 */
 	@Override
-	public CitizenInfo selectByPK(Java.lang.Integer id) {
+	public CitizenInfo selectByPK(java.lang.Integer id) {
 		return (CitizenInfo) getSqlMapClientTemplate().queryForObject("CitizenInfo.selectByPK", id);
 	}
 
@@ -65,7 +65,7 @@ public class CitizenInfoDaoImpl extends IbatisEntityDao<CitizenInfo> implements 
 	 * @Description: 删除
 	 */
 	@Override
-	public int deleteByPK(Java.lang.Integer id) {
+	public int deleteByPK(java.lang.Integer id) {
 		return getSqlMapClientTemplate().delete("CitizenInfo.delete", id);
 	}
 

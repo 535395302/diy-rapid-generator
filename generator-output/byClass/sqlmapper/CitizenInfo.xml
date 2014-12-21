@@ -26,12 +26,10 @@
 
     <insert id="insert" parameterClass="CitizenInfo" >
         INSERT INTO CitizenInfo (
-            id  ,
             name  ,
             age  ,
             birthDay  
         ) VALUES (
-            #id#  ,
             #name#  ,
             #age#  ,
             #birthDay#  
@@ -56,6 +54,7 @@
         DELETE FROM CitizenInfo
         WHERE
             id = #id#
+
     </delete>
 
 

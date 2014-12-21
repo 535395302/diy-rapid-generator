@@ -49,7 +49,7 @@ public interface CitizenInfoService {
 
 	 * @Description: 查询
 	 */
-	CitizenInfo selectByPK(Java.lang.Integer id);
+	CitizenInfo selectByPK(java.lang.Integer id);
 
 	/**
 	 *
@@ -57,6 +57,6 @@ public interface CitizenInfoService {
 	 *
 	 * @Description: 删除
 	 */
-	int delete(Java.lang.Integer id);
+	int delete(java.lang.Integer id);
 
 }

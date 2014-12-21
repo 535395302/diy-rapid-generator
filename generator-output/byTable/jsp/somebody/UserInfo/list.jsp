@@ -1,4 +1,4 @@
-<%@page import="com.who.are.you.model.*" %>
+<%@page import="$" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags/simpletable" prefix="simpletable"%>

@@ -1,4 +1,4 @@
-<%@page import="com.who.are.you.model.*" %>
+<%@page import="$" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/commons/taglibs.jsp" %>
 

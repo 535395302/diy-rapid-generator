@@ -50,7 +50,7 @@ public class CitizeninfoAction extends BaseActionSupport<CitizenInfo> {
         // FIXME 仅供参考
         String id = getRequest().getParameter("id");
         if(StringUtils.isNotEmpty(id)){
-            CitizenInfo obj = CitizenInfoService.selectByPK(new Java.lang.Integer(id));
+            CitizenInfo obj = CitizenInfoService.selectByPK(new java.lang.Integer(id));
             getRequest().setAttribute("citizenInfo", obj);
         }
 
@@ -78,7 +78,7 @@ public class CitizeninfoAction extends BaseActionSupport<CitizenInfo> {
     public void deleteAjax() {
         // FIXME 仅供参考
         String id = getRequest().getParameter("id");
-        int result = CitizenInfoService.delete(new Java.lang.Integer(id));
+        int result = CitizenInfoService.delete(new java.lang.Integer(id));
 
         // return "true" or "false"
         Struts2Utils.renderText(new Boolean(result > 0).toString());

@@ -12,15 +12,21 @@ import java.util.*;
 public class UserInfo implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/** id */
 	private java.lang.Long userId;
 
+	/** 用户名 */
 	private java.lang.String username;
 
+	/** 密码 */
 	private java.lang.String password;
+
 
 	private java.util.Date birthDate;
 
+
 	private java.lang.Integer sex;
+
 
 	private java.lang.Integer age;
 

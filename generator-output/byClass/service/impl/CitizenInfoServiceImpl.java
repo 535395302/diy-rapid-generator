@@ -69,7 +69,7 @@ public class CitizenInfoServiceImpl implements CitizenInfoService {
      * @Description: 查询
      */
     @Override
-    CitizenInfo selectByPK(Java.lang.Integer id){
+    CitizenInfo selectByPK(java.lang.Integer id){
         if(id==null){
             return null;
         }
@@ -83,7 +83,7 @@ public class CitizenInfoServiceImpl implements CitizenInfoService {
      * @Description: 删除
      */
     @Override
-    int delete(Java.lang.Integer id){
+    int delete(java.lang.Integer id){
         if(id==null){
             return 0;
         }

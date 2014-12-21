@@ -44,7 +44,7 @@ public class CitizenInfoDao extends EntityDAO<CitizenInfo>{
 
 	 * @Description: 查询
 	 */
-	CitizenInfo selectByPK(Java.lang.Integer id);
+	CitizenInfo selectByPK(java.lang.Integer id);
 
 	/**
 	 *
@@ -52,6 +52,6 @@ public class CitizenInfoDao extends EntityDAO<CitizenInfo>{
 	 *
 	 * @Description: 删除
 	 */
-	int deleteByPK(Java.lang.Integer id);
+	int deleteByPK(java.lang.Integer id);
 
 }
