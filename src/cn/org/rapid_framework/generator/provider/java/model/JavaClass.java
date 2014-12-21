@@ -23,7 +23,7 @@ public class JavaClass {
 
 	/**
 	 * 自定义：获取clazz中的所有成员变量名
-	 * @Author: tzb
+	 * @Author: tzb 2014-12-21 17:35:32
  	 */
 	public List<String> getFieldNames(){
 		List<String> list=new ArrayList<String>();
