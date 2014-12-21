@@ -1,10 +1,5 @@
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import cn.org.rapid_framework.generator.util.FileHelper;
 import com.model.CitizenInfo;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * Created by tian on 14/12/20.
@@ -14,9 +9,11 @@ public class Main {
      * 代码生成器模板可以引用的相关变量
      * 1. g.generateByTable("table_name") 方法可以引用的变量
      * table : cn.org.rapid_framework.generator.provider.db.model.Table
+     * column: cn.org.rapid_framework.generator.provider.db.table.model.*
      *
      * 2. g.generateByClass("class") 方法可以引用的变量
      * clazz : cn.org.rapid_framework.generator.provider.java.model.JavaClass
+     * field : cn.org.rapid_framework.generator.provider.java.model.*
      *
      * 3.公共变量
      * env : 系统环境变量

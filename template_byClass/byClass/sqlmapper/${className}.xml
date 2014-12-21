@@ -19,15 +19,11 @@
         select * from ${className}
     </select>
 
-    <select id="selectByPK" resultMap="baseMap" parameterClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>"
+    <select id="selectByPK" resultMap="baseMap" parameterClass="${clazz.fields?first.javaType}"
             resultClass="${className}">
         SELECT * FROM ${className}
         WHERE
-            <#list clazz.fields as field>
-              <#if field==clazz.fields[0]>
-            ${field.fieldName} = #${field.fieldName}#
-              </#if>
-            </#list>
+            ${clazz.fields?first.fieldName} = #${clazz.fields?first.fieldName}#
     </select>
 
     <insert id="insert" parameterClass="${className}" >
@@ -44,8 +40,8 @@
         </#if>
 </#list>
         )
-        <selectKey resultClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>"
-                   keyProperty="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.fieldName}</#if></#list>">
+        <selectKey resultClass="${clazz.fields?first.javaType}"
+                   keyProperty="${clazz.fields?first.fieldName}">
             select last_insert_id()
         </selectKey>
     </insert>
@@ -66,14 +62,11 @@
 </#list>
         </update>
 
-    <delete id="delete" parameterClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>" >
+    <delete id="delete" parameterClass="${clazz.fields?first.javaType}" >
         DELETE FROM ${className}
         WHERE
-<#list clazz.fields as field>
-    <#if field==clazz.fields[0]>
-            ${field.fieldName} = #${field.fieldName}#
-    </#if>
-</#list>
+            ${clazz.fields?first.fieldName} = #${clazz.fields?first.fieldName}#
+
     </delete>
 
 

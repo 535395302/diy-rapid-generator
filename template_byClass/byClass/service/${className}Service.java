@@ -39,15 +39,13 @@ public interface ${className}Service {
 	 */
 	int update(${className} ${classNameLower});
 
-<#list clazz.fields as field>
-	<#if field==clazz.fields[0]>
 	/**
 	 *
 	 * @Title: selectByPK
 
 	 * @Description: 查询
 	 */
-	${className} selectByPK(${field.javaType?cap_first} id);
+	${className} selectByPK(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName});
 
 	/**
 	 *
@@ -55,8 +53,6 @@ public interface ${className}Service {
 	 *
 	 * @Description: 删除
 	 */
-	int delete(${field.javaType?cap_first} id);
-	</#if>
-</#list>
+	int delete(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName});
 
 }

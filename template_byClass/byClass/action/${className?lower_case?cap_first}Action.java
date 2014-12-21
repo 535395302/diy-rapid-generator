@@ -48,7 +48,7 @@ public class ${className?lower_case?cap_first}Action extends BaseActionSupport<$
         // FIXME 仅供参考
         String id = getRequest().getParameter("id");
         if(StringUtils.isNotEmpty(id)){
-            ${className} obj = ${className}Service.selectByPK(new <#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType?cap_first}</#if></#list>(id));
+            ${className} obj = ${className}Service.selectByPK(new ${clazz.fields?first.javaType}(id));
             getRequest().setAttribute("${classNameLower}", obj);
         }
 
@@ -76,7 +76,7 @@ public class ${className?lower_case?cap_first}Action extends BaseActionSupport<$
     public void deleteAjax() {
         // FIXME 仅供参考
         String id = getRequest().getParameter("id");
-        int result = ${className}Service.delete(new <#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType?cap_first}</#if></#list>(id));
+        int result = ${className}Service.delete(new ${clazz.fields?first.javaType}(id));
 
         // return "true" or "false"
         Struts2Utils.renderText(new Boolean(result > 0).toString());

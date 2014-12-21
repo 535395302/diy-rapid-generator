@@ -45,16 +45,14 @@ public class ${className}DaoImpl extends IbatisEntityDao<${className}> implement
 		return getSqlMapClientTemplate().update("${className}.update", ${classNameLower});
 	}
 
-<#list clazz.fields as field>
-<#if field==clazz.fields[0]>
 	/**
 	 * @param id
 	 * @Title: selectByPK
 	 * @Description: 查询
 	 */
 	@Override
-	public ${className} selectByPK(${field.javaType?cap_first} id) {
-		return (${className}) getSqlMapClientTemplate().queryForObject("${className}.selectByPK", id);
+	public ${className} selectByPK(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName}) {
+		return (${className}) getSqlMapClientTemplate().queryForObject("${className}.selectByPK", ${clazz.fields?first.fieldName});
 	}
 
 	/**
@@ -63,10 +61,8 @@ public class ${className}DaoImpl extends IbatisEntityDao<${className}> implement
 	 * @Description: 删除
 	 */
 	@Override
-	public int deleteByPK(${field.javaType?cap_first} id) {
-		return getSqlMapClientTemplate().delete("${className}.delete", id);
+	public int deleteByPK(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName}) {
+		return getSqlMapClientTemplate().delete("${className}.delete", ${clazz.fields?first.fieldName});
 	}
-</#if>
-</#list>
 
 }

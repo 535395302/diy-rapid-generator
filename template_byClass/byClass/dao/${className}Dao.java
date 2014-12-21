@@ -31,15 +31,13 @@ public class ${className}Dao extends EntityDAO<${className}>{
 	 */
 	int update(${className} ${classNameLower});
 
-<#list clazz.fields as field>
-<#if field==clazz.fields[0]>
 	/**
 	 *
 	 * @Title: selectByPK
 
 	 * @Description: 查询
 	 */
-	${className} selectByPK(${field.javaType?cap_first} id);
+	${className} selectByPK(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName});
 
 	/**
 	 *
@@ -47,8 +45,6 @@ public class ${className}Dao extends EntityDAO<${className}>{
 	 *
 	 * @Description: 删除
 	 */
-	int deleteByPK(${field.javaType?cap_first} id);
-</#if>
-</#list>
+	int deleteByPK(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName});
 
 }

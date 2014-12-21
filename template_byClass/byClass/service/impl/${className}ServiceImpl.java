@@ -58,8 +58,6 @@ public class ${className}ServiceImpl implements ${className}Service {
         return dao.update(${classNameLower});
     }
 
-<#list clazz.fields as field>
-<#if field==clazz.fields[0]>
     /**
      *
      * @Title: selectByPK
@@ -67,7 +65,7 @@ public class ${className}ServiceImpl implements ${className}Service {
      * @Description: 查询
      */
     @Override
-    ${className} selectByPK(${field.javaType?cap_first} id){
+    ${className} selectByPK(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName}){
         if(id==null){
             return null;
         }
@@ -81,12 +79,10 @@ public class ${className}ServiceImpl implements ${className}Service {
      * @Description: 删除
      */
     @Override
-    int delete(${field.javaType?cap_first} id){
+    int delete(${clazz.fields?first.javaType} ${clazz.fields?first.fieldName}){
         if(id==null){
             return 0;
         }
         return dao.deleteByPK(id);
     }
-</#if>
-</#list>
 }
