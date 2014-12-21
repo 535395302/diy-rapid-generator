@@ -1,0 +1,76 @@
+<#include "/macro.include"/>
+<#assign className = clazz.className>
+<#assign classNameLower = className?uncap_first>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="${className}" >
+    <typeAlias alias="${className}" type="${basepackage}.model.${namespace}.${className}" />
+    
+    
+    <resultMap class="${className}" id="baseMap">
+        <#list clazz.fieldNames as fieldName>
+        <result field="${fieldName}" property="${fieldName}"/>
+        </#list>
+    </resultMap>
+
+  
+    <!-- 找到所有记录 -->
+    <select id="selectAll" resultMap="baseMap" resultClass="${className}">
+        select * from ${className}
+    </select>
+
+    <select id="selectByPK" resultMap="baseMap" parameterClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>"
+            resultClass="${className}">
+        SELECT * FROM ${className}
+        WHERE
+            <#list clazz.fieldNames as field>
+              <#if field==clazz.fieldNames[0]>
+            ${field} = #${field}#
+              </#if>
+            </#list>
+    </select>
+
+    <insert id="insert" parameterClass="${className}" >
+        INSERT INTO ${className} (
+<#list clazz.fieldNames as fieldName>
+            ${fieldName}  <#if fieldName_has_next>,</#if>
+</#list>
+        ) VALUES (
+<#list clazz.fieldNames as fieldName>
+            #${fieldName}#  <#if fieldName_has_next>,</#if>
+</#list>
+        )
+        <selectKey resultClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>"
+                   keyProperty="<#list clazz.fieldNames as fieldName><#if fieldName==clazz.fieldNames[0]>${fieldName}</#if></#list>">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <update id="updateByPK" parameterClass="${className}" >
+        UPDATE ${className}
+        SET
+<#list clazz.fieldNames as fieldName>
+    <#if fieldName!=clazz.fieldNames[0]>
+          ${fieldName} = #${fieldName}# <#if fieldName_has_next>,</#if>
+    </#if>
+</#list>
+        WHERE
+<#list clazz.fieldNames as fieldName>
+    <#if fieldName==clazz.fieldNames[0]>
+          ${fieldName} = #${fieldName}#
+    </#if>
+</#list>
+        </update>
+
+    <delete id="delete" parameterClass="<#list clazz.fields as field><#if field==clazz.fields[0]>${field.javaType}</#if></#list>" >
+        DELETE FROM ${className}
+        WHERE
+<#list clazz.fieldNames as fieldName>
+    <#if fieldName==clazz.fieldNames[0]>
+            ${fieldName} = #${fieldName}#
+    </#if>
+</#list>
+    </delete>
+
+
+</sqlMap>
