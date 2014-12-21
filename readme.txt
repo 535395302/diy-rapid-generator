@@ -23,3 +23,8 @@
         1）g.generateByClass(Class<?> clazz,String templateDirByClass);
 
         2）g.generateByTable(String tableName,String templateDirByTable);
+
+
+其他资料：
+    Freemarker操作字符串：http://www.blogjava.net/alinglau36/archive/2011/02/23/344970.html
+    Freemarker详解：http://www.blogjava.net/176142998/archive/2010/07/03/325159.html
