@@ -1,5 +1,8 @@
 package cn.org.rapid_framework.generator.provider.java.model;
 
+import cn.org.rapid_framework.generator.util.StringHelper;
+import cn.org.rapid_framework.generator.util.typemapping.ActionScriptDataTypesUtils;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -12,25 +15,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import cn.org.rapid_framework.generator.util.StringHelper;
-import cn.org.rapid_framework.generator.util.typemapping.ActionScriptDataTypesUtils;
-
 public class JavaClass {
 	private Class clazz;
 	public JavaClass(Class clazz) {
 		this.clazz = clazz;
-	}
-
-	/**
-	 * 自定义：获取clazz中的所有成员变量名
-	 * @Author: tzb 2014-12-21 17:35:32
- 	 */
-	public List<String> getFieldNames(){
-		List<String> list=new ArrayList<String>();
-		for (Field field : getClazz().getDeclaredFields()) {
-			list.add(field.getName());
-		}
-		return list;
 	}
 
 	public String getClassName() {
