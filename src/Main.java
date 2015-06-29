@@ -1,5 +1,6 @@
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import com.model.CitizenInfo;
+import cn.org.rapid_framework.generator.util.StringHelper;
+import com.model.*;
 
 /**
  * Created by tian on 14/12/20.
@@ -29,8 +30,6 @@ public class Main {
          * 3）serialVersionUID应当被注释，不然在ibatis的mapper文件中会被用于sql语句。
          * 4）...
          */
-        Class clazz = CitizenInfo.class;
-
         GeneratorFacade g = new GeneratorFacade();
         g.deleteOutRootDir();							//删除生成器的输出目录
 
@@ -57,7 +56,7 @@ public class Main {
          *   PRIMARY KEY (`user_id`)
          * ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
          */
-        g.generateByTable("user_info","template_byTable");	//通过数据库表生成文件
+        //g.generateByTable("user_info","template_byTable");	//通过数据库表生成文件
 
         //其他方式
         //g.generateByAllTable("template");	//自动搜索数据库中的所有表并生成文件,template为模板的根目录

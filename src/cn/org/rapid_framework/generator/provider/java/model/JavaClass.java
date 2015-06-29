@@ -21,6 +21,10 @@ public class JavaClass {
 		this.clazz = clazz;
 	}
 
+	public String getTableName(){
+		return StringHelper.toUnderscoreName(getClassName());
+	}
+
 	public String getClassName() {
 		return this.clazz.getSimpleName();
 	}

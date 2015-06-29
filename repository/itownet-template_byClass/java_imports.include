@@ -1,0 +1,4 @@
+import java.util.*;
+
+import ${basepackage}.${namespace}.dao.*;
+import ${basepackage}.${namespace}.service.*;
