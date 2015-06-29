@@ -1,0 +1,61 @@
+<#include "/macro.include"/>
+<#assign className = clazz.className>
+    <#assign classNameLower = className?uncap_first>
+<div class="modal-header">
+    <h3 class="modal-title">${className}{{edit${className}.${clazz.fields?first.fieldName} ? '更新':'新增'}}</h3>
+</div>
+<!--
+<span class="text-danger">*</span>
+required data-required-msg="请填写职称!" maxlength="20"
+
+<button class="btn btn-default btn-sm" ng-click=""><span class="glyphicon glyphicon-user"></span>按钮</button>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">职称Logo:</label>
+            <div class="col-md-3 col-md-offset-1">
+                <button class="k-button" ng-click="uploadImage()"><span class="glyphicon glyphicon-picture"></span>上传图标Logo</button>
+            </div>
+            <div class="col-md-4">
+                <img ng-show="entity.imgId" style="max-height: 80px;" ng-src="{{imgUrl}}" alt="Logo"/>
+            </div>
+        </div>
+
+        kendo-numeric-text-box k-min="0"
+
+        kendo-drop-down-list k-data-source="YesOrNos" k-data-text-field="'name'" k-data-value-field="'id'" k-option-label="'请选择'"
+-->
+<div class="modal-body">
+    <form class="form-horizontal" role="form" kendo-validator="validator"  k-options="validation">
+    <#list clazz.fields as field>
+        <#if field != clazz.fields?first>
+        <#if field.javaType == 'boolean'>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">${field.fieldName?cap_first}</label>
+            <div class="col-sm-8">
+                <label class="radio-inline">
+                    <input type="radio" name="${field.fieldName}" id="inlineRadio1" ng-model="entity.${field.fieldName}" value="Y"> 是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="${field.fieldName}" id="inlineRadio2" ng-model="entity.${field.fieldName}" value="N"> 不是
+                </label>
+                <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
+            </div>
+        </div>
+            <#else>
+        <div class="form-group">
+            <label for="${field.fieldName}" class="col-sm-3 control-label">${field.fieldName?cap_first}</label>
+            <div class="col-sm-8">
+                <input type="text" id="${field.fieldName}" name="${field.fieldName}" class="form-control" ng-model="entity.${field.fieldName}" placeholder="${field.fieldName}">
+                <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
+            </div>
+        </div>
+        </#if>
+        </#if>
+    </#list>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="save(entity)">提交</button>
+    <button class="btn btn-danger" ng-click="cancel()">取消</button>
+</div>
