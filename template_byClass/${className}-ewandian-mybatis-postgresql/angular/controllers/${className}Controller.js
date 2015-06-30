@@ -9,9 +9,8 @@
 "use strict";
 
 define([], function () {
-    var app = angular.module('${basepackage}.${namespace}.${classNameLower}Controller',['']);
+    var app = angular.module('${basepackage}.${namespace}.${classNameLower}Controller',[]);
     app.controller('${classNameLower}Controller',
-        ['$scope','$rootScope','$modal','$log','$window','${classNameLower}Service','$modalInstance',
         function ($scope, $rootScope, $modal,$log,$window,${classNameLower}Service,$modalInstance) {
             $scope.init = function(){
 
@@ -19,30 +18,9 @@ define([], function () {
 
             // kendo grid common setting
             $scope.gridSetting = {
-                resizable:true,
-                sortable: true,
-                pageable: {
-                    input: true,
-                    numeric: false,
-                    messages: {
-                        display: "显示{0}-{1}条，共{2}条",
-                        empty: "没有数据",
-                        page: "页",
-                        of: "/ {0}",
-                        itemsPerPage: "条/页",
-                        first: "第一页",
-                        previous: "前一页",
-                        next: "下一页",
-                        last: "最后一页",
-                        refresh: "刷新"
-                    }
-                }
+
             };
 
-
-            /*
-             *  ${className}
-             */
             // ${className} grid options
             $scope.gridOptions = {
                 dataSource: {
@@ -85,16 +63,31 @@ define([], function () {
                         }
                     }
                 },
-                sortable: $scope.gridSetting.sortable,
                 filterable: $scope.gridSetting.filterable,
-                pageable: $scope.gridSetting.pageable,
-                resizable:$scope.gridSetting.resizable,
+                resizable:true,
+                sortable: true,
+                pageable: {
+                    input: true,
+                        numeric: false,
+                        messages: {
+                        display: "显示{0}-{1}条，共{2}条",
+                            empty: "没有数据",
+                            page: "页",
+                            of: "/ {0}",
+                            itemsPerPage: "条/页",
+                            first: "第一页",
+                            previous: "前一页",
+                            next: "下一页",
+                            last: "最后一页",
+                            refresh: "刷新"
+                    }
+                },
                 columns: [
                     <#list clazz.fields as field>
                     <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
                     {   field: "${field.fieldName}",
                         title: "${field.fieldName?cap_first}",
-                        width: "100px",
+                        width: "10%",
                         values: [
                             { text: "True", value: true },
                             { text: "False", value: false }
@@ -102,22 +95,22 @@ define([], function () {
                     }<#elseif field.javaType == 'java.lang.String'>
                     {   field: "${field.fieldName}",
                         title: "${field.fieldName?cap_first}",
-                        width: "100px"
+                        width: "10%"
                     }<#elseif field.javaType == 'java.lang.Integer'>
                     {   field: "${field.fieldName}",
                         title: "${field.fieldName?cap_first}",
-                        width: "100px"
+                        width: "10%"
                     }<#elseif field.javaType == 'java.util.Date'>
                     {   field: "${field.fieldName}",
                         title: "${field.fieldName?cap_first}",
-                        width: "100px",
+                        width: "10%",
                         format: "{0: yyyy-MM-dd HH:mm:ss}"
                     }<#else></#if>,</#list>
                     {   command:[
                             { text: "编辑", click: function (e) {$scope.save${className}(angular.copy(this.dataItem($(e.currentTarget).closest("tr"))));} },
                             { text: "删除", click: function (e) {$scope.remove${className}(this.dataItem($(e.currentTarget).closest("tr")));} }
                         ],
-                        title: "操作", width: "200px"
+                        title: "操作", width: "15%"
                     }
                 ]
             };
@@ -137,7 +130,7 @@ define([], function () {
                 var modalInstance = $modal.open({
                     keyboard: false,
                     backdrop: 'static',
-                    templateUrl: 'resources/platform/????????/views/add${className}.html',
+                    templateUrl: 'resources/platform/????????/views/${className}Edit.html',
                     controller: function ($scope, $modalInstance,entity) {
                         $scope.entity = entity || {} ;
 
@@ -198,7 +191,7 @@ define([], function () {
                 }
             };
 
-        }]);
+        });
 });
 
 /** // Image upload

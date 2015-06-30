@@ -1,23 +1,20 @@
 <#include "/macro.include"/>
 <#assign className = clazz.className>
 <#assign classNameLower = className?uncap_first>
+'use strict';
 /**
  * @author：Tian
  * @date: ${now?string('yyyy/MM/dd')}
  */
-'use strict';
 define([], function () {
-    angular.module('${basepackage}.${namespace}.${classNameLower}Service',[]).factory('${classNameLower}Service',
-    ["$http","$q",
-    function ($http,$q) {
-        var instance = {};
-
-        var basepath = '/${namespace}Service/${classNameLower}/';
+    var customersFactory = function ($http,$q) {
+        var serviceBase = '/${namespace}Service/${classNameLower}/',
+            factory = {};
 
         /** 获取${className}列表 */
-        instance.list = function (vo) {
+        factory.list = function (vo) {
             var d = $q.defer();
-            $http.post(basepath+'selectPageList',vo)
+            $http.post(serviceBase+'selectPageList',vo)
                 .success(function (response) { d.resolve(response); })
                 .error(function (response) {d.reject(response);});
             return d.promise;
@@ -27,9 +24,9 @@ define([], function () {
          * 保存${className}（包括新增，更新）
          * @param ${classNameLower}
          */
-        instance.save = function (vo) {
+        factory.save = function (vo) {
             var d = $q.defer();
-            $http.post(basepath+(vo['${clazz.fields[0].fieldName}'] ? 'updateOne' : 'insertOne'), vo)
+            $http.post(serviceBase+(vo['${clazz.fields[0].fieldName}'] ? 'updateOne' : 'insertOne'), vo)
                 .success(function (response) { d.resolve(response); })
                 .error(function (response) {d.reject(response);});
             return d.promise;
@@ -39,14 +36,18 @@ define([], function () {
          * 删除${className}，级联删除${className}所持Card
          * @param id 被删除的${classNameLower}的ID
          */
-        instance.remove = function (id) {
+        factory.remove = function (id) {
             var d = $q.defer();
-            $http.post(basepath+'deleteById/' + id)
+            $http.post(serviceBase+'deleteById/' + id)
                 .success(function (response) { d.resolve(response); })
                 .error(function (response) {d.reject(response);});
             return d.promise;
         };
 
-        return instance;
-    }]);
+        return factory;
+    };
+
+    angular.module('${basepackage}.${namespace}.${classNameLower}Service',[]).factory('${classNameLower}Service', customersFactory);
 });
+
+
