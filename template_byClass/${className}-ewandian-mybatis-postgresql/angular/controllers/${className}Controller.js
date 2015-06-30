@@ -63,7 +63,6 @@ define([], function () {
                         }
                     }
                 },
-                filterable: $scope.gridSetting.filterable,
                 resizable:true,
                 sortable: true,
                 pageable: {
