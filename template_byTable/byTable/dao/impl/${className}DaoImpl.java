@@ -1,10 +1,10 @@
 <#include "/java_copyright.include">
 <#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.dao.impl;
+package ${basepackage}.dao.impl;
 
 
-import ${basepackage}.${namespace}.dao.${className}Dao;
+import ${basepackage}.dao.${className}Dao;
 import ${basepackage}.core.orm.ibatis.IbatisEntityDao;
 import ${basepackage}.model.${namespace}.${className};
 import org.springframework.stereotype.Repository;

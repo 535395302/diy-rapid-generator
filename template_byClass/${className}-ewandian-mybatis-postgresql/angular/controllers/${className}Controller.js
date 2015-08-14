@@ -11,15 +11,11 @@
 define([], function () {
     var app = angular.module('${basepackage}.${namespace}.${classNameLower}Controller',[]);
     app.controller('${classNameLower}Controller',
-        function ($scope, $rootScope, $modal,$log,$window,${classNameLower}Service,$modalInstance) {
-            $scope.init = function(){
+        function ($scope, $rootScope, $modal,$log,$window,${classNameLower}Service) {
 
-            };
+            $scope.vo = {};
 
-            // kendo grid common setting
-            $scope.gridSetting = {
-
-            };
+            $scope.init = function(){  };
 
             // ${className} grid options
             $scope.gridOptions = {
@@ -32,7 +28,7 @@ define([], function () {
                             var vo = $scope.vo;
                             vo["pageCount"]=options.data.pageSize;
                             vo["page"]=options.data.page;
-                            ${classNameLower}Service.getList(vo).then(
+                            ${classNameLower}Service.getPageList(vo).then(
                                 function success(response) {options.success(response);}
                                 ,function error(response) {options.error(response);}
                             );
@@ -40,10 +36,10 @@ define([], function () {
                     },
                     schema:{
                         data: function (d) {
-                            return d.data;
+                            return d.data.datas;
                         },
                         total: function (d) {
-                            return d.total;
+                            return d.data.total;
                         },
                         model:{
                             fields:{
@@ -54,7 +50,7 @@ define([], function () {
                                     <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'string'}
                                 <#elseif field.javaType == 'java.lang.Integer'>
                                     <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'number'}
-                                <#elseif field.javaType == 'java.util.Date'>
+                                <#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
                                     <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'date'}
                                 <#else>
                                 </#if>
@@ -65,46 +61,30 @@ define([], function () {
                 },
                 resizable:true,
                 sortable: true,
+                toolbar:kendo.template(angular.element('#gridHeader').html()),
                 pageable: {
                     input: true,
-                        numeric: false,
-                        messages: {
+                    numeric: false,
+                    pageSizes: [10,20,30],
+                    messages: {
                         display: "显示{0}-{1}条，共{2}条",
-                            empty: "没有数据",
-                            page: "页",
-                            of: "/ {0}",
-                            itemsPerPage: "条/页",
-                            first: "第一页",
-                            previous: "前一页",
-                            next: "下一页",
-                            last: "最后一页",
-                            refresh: "刷新"
+                        empty: "没有数据",
+                        page: "页",
+                        of: "/ {0}",
+                        itemsPerPage: "条/页",
+                        first: "第一页",
+                        previous: "前一页",
+                        next: "下一页",
+                        last: "最后一页",
+                        refresh: "刷新"
                     }
                 },
-                columns: [
-                    <#list clazz.fields as field>
-                    <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
-                    {   field: "${field.fieldName}",
-                        title: "${field.fieldName?cap_first}",
-                        width: "10%",
-                        values: [
-                            { text: "True", value: true },
-                            { text: "False", value: false }
-                        ]
-                    }<#elseif field.javaType == 'java.lang.String'>
-                    {   field: "${field.fieldName}",
-                        title: "${field.fieldName?cap_first}",
-                        width: "10%"
-                    }<#elseif field.javaType == 'java.lang.Integer'>
-                    {   field: "${field.fieldName}",
-                        title: "${field.fieldName?cap_first}",
-                        width: "10%"
-                    }<#elseif field.javaType == 'java.util.Date'>
-                    {   field: "${field.fieldName}",
-                        title: "${field.fieldName?cap_first}",
-                        width: "10%",
-                        format: "{0: yyyy-MM-dd HH:mm:ss}"
-                    }<#else></#if>,</#list>
+                columns: [<#list clazz.fields as field>                    <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
+                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%",
+                        values: [{ text: "True", value: true },{ text: "False", value: false }]}<#elseif field.javaType == 'java.lang.String'>
+                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%"}<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double'>
+                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%"}<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
+                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%",   format: "{0: yyyy-MM-dd HH:mm:ss}"}<#else></#if>,</#list>
                     {   command:[
                             { text: "编辑", click: function (e) {$scope.save${className}(angular.copy(this.dataItem($(e.currentTarget).closest("tr"))));} },
                             { text: "删除", click: function (e) {$scope.remove${className}(this.dataItem($(e.currentTarget).closest("tr")));} }
@@ -115,7 +95,7 @@ define([], function () {
             };
 
             $scope.reset = function () {
-                $scope.vo=null;
+                $scope.vo = {};
                 $scope.grid.dataSource.read();
             };
 
@@ -129,30 +109,35 @@ define([], function () {
                 var modalInstance = $modal.open({
                     keyboard: false,
                     backdrop: 'static',
-                    templateUrl: 'resources/platform/????????/views/${className}Edit.html',
-                    controller: function ($scope, $modalInstance,entity) {
+                    templateUrl: 'resources/erp-${namespace}/views/${className}Edit.html',
+                    controller: function ($window,$scope, $modalInstance,entity) {
                         $scope.entity = entity || {} ;
 
                         $scope.validation = {rules: {}, messages: {required:'必填'}};
 
+                        $scope.enable = true;
                         $scope.save = function (obj) {
+                            $scope.enable = false;
                             // 验证通过
                             if( $scope.validator.validate() ){
                                 ${classNameLower}Service.save(obj).then(
-                                    function(data){
-                                        if(data.status===1 || data.status==='ERROR'){
-                                            alert(data.message);
+                                    function(response){
+                                        if(response.status===1 || response.status==='ERROR'){
+                                            alert(response.message);
                                         }else{
-                                            $modalInstance.close(data);
+                                            $modalInstance.close(response);
                                         }
-                                    },function(data){
-                                        $window.alert("保存失败：\n" + data ) ;
-                                        console.log("保存失败：" , data);
+                                        $scope.enable = true;
+                                    },function(response){
+                                        $window.alert("保存失败：\n" + response ) ;
+                                        console.log("保存失败：" , response);
+                                        $scope.enable = true;
                                     }
                                 );
 
                             }else{
                                 for (var i in $scope.validator._errors) { angular.element('[name="'+i+'"]')[0].focus(); break; }
+                                $scope.enable = true;
                             }
                         };
 
@@ -166,8 +151,10 @@ define([], function () {
                     }
                 });
 
-                modalInstance.result.then(function (result) {
-                    // TODO refresh $scope.grid
+                modalInstance.result.then(function (data) {
+                    if(data.status===0 || data.status==="OK"){
+                        $scope.search();
+                    }
                 }, function () {
                     // close model
                 });
@@ -178,10 +165,10 @@ define([], function () {
                 if(obj && obj.${clazz.fields[0].fieldName} && confirm("确定删除吗？")){
                     ${classNameLower}Service.remove(obj.${clazz.fields?first.fieldName}).then(function (response) {
                         if(response.status==='OK'||response.status===0){
-                            $window.alert ("删除成功!");
+                            //$window.alert ("删除成功!");
                             $scope.grid.dataSource.read();
                         }else{
-                            $window.alert ("出错啦!错误原因:"+response.message);
+                            $window.alert ("错误:"+response.message);
                         }
                     }, function (data, status) {
                         // error

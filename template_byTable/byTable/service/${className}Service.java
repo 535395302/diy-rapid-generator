@@ -1,7 +1,7 @@
 <#include "/java_copyright.include">
 <#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.service;
+package ${basepackage}.service;
 
 
 import ${basepackage}.model.${namespace}.${className};

@@ -1,7 +1,7 @@
 <#include "/java_copyright.include">
 <#assign className = clazz.className>   
 <#assign classNameLower = className?uncap_first>   
-package ${basepackage}.${namespace}.dao;
+package ${basepackage}.dao;
 
 <#include "/java_imports.include">
 import ${basepackage}.model.${namespace}.${className};

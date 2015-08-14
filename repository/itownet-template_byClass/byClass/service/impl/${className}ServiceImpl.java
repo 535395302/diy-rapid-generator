@@ -1,11 +1,11 @@
 <#include "/java_copyright.include">
 <#assign className = clazz.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.service.impl;
+package ${basepackage}.service.impl;
 
 import java.lang.Override;
-import ${basepackage}.${namespace}.dao.${className}Dao;
-import ${basepackage}.${namespace}.service.${className}Service;
+import ${basepackage}.dao.${className}Dao;
+import ${basepackage}.service.${className}Service;
 import ${basepackage}.model.${namespace}.${className};
 
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 <#include "/java_copyright.include">
 <#assign className = clazz.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.domian.vo;
+package ${basepackage}.domain.po;
 
 import com.ewandian.common.b2b.entity.BaseEntity;
 
@@ -14,6 +14,8 @@ public class ${className} extends BaseEntity {
 <#list clazz.fields as field>
     private ${field.javaType} ${field.fieldName};
 </#list>
+
+    public ${className}(){}
 <#list clazz.fields as field>
 
     public ${field.javaType} get${field.fieldName?cap_first}(){

@@ -2,13 +2,37 @@ package cn.org.rapid_framework.generator.provider.java.model;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.org.rapid_framework.generator.util.typemapping.ActionScriptDataTypesUtils;
 
 public class JavaField {
 	private Field field;
 	private JavaClass clazz; //与field相关联的class
-	
+
+	// TODO javaType --> jdbcType
+	private final static Map<String, String> _types = new HashMap<String, String>();
+	static {
+		_types.put( "java.lang.Byte"		,"TINYINT"		);
+		_types.put( "java.lang.Short"		,"SMALLINT"		);
+		_types.put( "java.lang.Integer"		,"INTEGER"		);
+		_types.put( "java.lang.Long"		,"BIGINT"		);
+		_types.put( "java.lang.Float"		,"REAL"			);
+		_types.put( "java.lang.Double"		,"DOUBLE"		);
+		_types.put( "java.math.BigDecimal"	,"NUMERIC"		);
+		_types.put( "java.lang.Boolean"		,"BOOLEAN"		);
+		_types.put( "java.lang.String"		,"VARCHAR"		);
+		_types.put( "java.util.Date"		,"TIMESTAMP"	);
+		_types.put( "java.sql.Date"			,"DATE"			);
+		_types.put( "java.sql.Time"			,"TIME"			);
+		_types.put( "java.sql.Timestamp"	,"TIMESTAMP"	);
+		_types.put( "java.sql.Clob"			,"CLOB"			);
+		_types.put( "java.sql.Blob"			,"BLOB"			);
+		_types.put( "java.sql.Array"		,"ARRAY"		);
+		_types.put( "java.sql.Ref"			,"REF"			);
+	}
+
 	public JavaField(Field field, JavaClass clazz) {
 		super();
 		this.field = field;
@@ -25,6 +49,10 @@ public class JavaField {
 
 	public String getJavaType() {
 		return field.getType().getName();
+	}
+
+	public String getJdbcType(){
+		return _types.keySet().contains(getJavaType()) ? _types.get(getJavaType()) : getJavaType();
 	}
 
 	public String getAsType() {

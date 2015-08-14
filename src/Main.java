@@ -37,7 +37,7 @@ public class Main {
          * 参数1：类
          * 参数2：模板的根目录
          */
-        g.generateByClass(CitizenInfo.class,"template_byClass");
+        g.generateByClass(ShopMasterAudit.class,"template_byClass");
 
         //g.printAllTableNames();				//打印数据库中的表名称
 

@@ -1,16 +1,15 @@
 <#include "/java_copyright.include">
 <#assign className = clazz.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.validation.impl;
+package ${basepackage}.validation.impl;
 
 import org.springframework.validation.Errors;
 
-import ${basepackage}.${namespace}.common.CRMCommonValidate;
-import ${basepackage}.${namespace}.constants.${namespace}Constants;
-import ${basepackage}.${namespace}.dao.I${className}DAO;
-import ${basepackage}.${namespace}.domian.po.${className};
-import ${basepackage}.${namespace}.validation.I${className}Validation;
-import com.ewandian.platform.common.ApplicationContextHolder;
+import ${basepackage}.common.${namespace?cap_first}CommonValidation;
+import ${basepackage}.constants.${namespace?cap_first}Constants;
+import ${basepackage}.domain.${className};
+import ${basepackage}.validation.I${className}Validation;
+import org.springframework.validation.Errors;
 
 /**
  * ${className}-validation 实现
@@ -18,10 +17,10 @@ import com.ewandian.platform.common.ApplicationContextHolder;
  * @date ${now?string("yyyy-MM-dd")}
  * @version 1.0
  */
-public class ${className}Validation extends ${namespace}CommonValidate<${className}>
+public class ${className}Validation extends ${namespace?cap_first}CommonValidation<${className}>
 		implements I${className}Validation {
 	
-	private I${className}DAO ${classNameLower}DAO;
+	//private I${className}DAO ${classNameLower}DAO;
 
 	public boolean supports(Class<?> class1) {
 		return class1.equals(${className}.class);
@@ -29,38 +28,35 @@ public class ${className}Validation extends ${namespace}CommonValidate<${classNa
 
 	public void validate(Object obj, Errors errors) {
 		${className} ${classNameLower} = (${className}) obj;
-		  String[] validateValues = {
-				  ${classNameLower}.getId(),${classNameLower}.get(),${classNameLower}.get()
-				 ,${classNameLower}.get(),${classNameLower}.get(),${classNameLower}.get()
-				 ,${classNameLower}.get()
-		   };
+		String[] validateValues = {
+<#list clazz.fields as field><#if field.javaType=="java.lang.String">			<#if field == clazz.fields?first><#else>,</#if>${classNameLower}.get${field.fieldName?cap_first}()
+</#if></#list>
+		};
 
-		  Integer[] maxlengths = {
-				 40,40,10,20,10,20,20
-		  };
-		  String[] showMessages = {
-				  "Id","","","","","",""
-		  };
+		Integer[] maxlengths = {
+<#list clazz.fields as field><#if field.javaType=="java.lang.String"><#if field == clazz.fields?first>			<#else>,</#if>100</#if></#list>
+		};
+		/*String[] showMessages = {
+<#list clazz.fields as field><#if field.javaType=="java.lang.String"><#if field == clazz.fields?first>			<#else>,</#if>"${field.fieldName?cap_first}"</#if></#list>
+		};*/
 		  
-		  Integer[] isAllowBlanks ={
-				  ${namespace}Constants.isBlank.NO.getValue(),${namespace}Constants.isBlank.NO.getValue()
-				 ,${namespace}Constants.isBlank.NO.getValue(),
-				  ${namespace}Constants.isBlank.NO.getValue(),${namespace}Constants.isBlank.NO.getValue()
-				 ,${namespace}Constants.isBlank.NO.getValue(), ${namespace}Constants.isBlank.YES.getValue()
-		  };
-		  String errorPrefix = "${namespace}.${classNameLower}.errors.";
-		  this.doValidateString(errors, validateValues, maxlengths, showMessages,isAllowBlanks,errorPrefix);
+		Integer[] isAllowBlanks ={
+<#list clazz.fields as field><#if field.javaType=="java.lang.String">			<#if field == clazz.fields?first> <#else>,</#if>${namespace?cap_first}Constants.isBlank.YES.getValue()
+</#if></#list>
+		};
+		//String errorPrefix = "${namespace}.errors.";
+		this.doValidateString(errors, validateValues, maxlengths, null,isAllowBlanks,errorPrefix);
 	}
 	
-	public boolean isExist(${className} ${classNameLower}) {
-		Long count = this.get${className}DAO().selectCount(${classNameLower});
-		return count > 0;
-	}
+//	public boolean isExist(${className} ${classNameLower}) {
+//		Long count = this.get${className}DAO().selectCount(${classNameLower});
+//		return count > 0;
+//	}
 
-	public I${className}DAO get${className}DAO() {
-		if(this.${classNameLower}DAO == null) {
-			this.${classNameLower}DAO = (I${className}DAO) ApplicationContextHolder.getBean("${classNameLower}DAO");
-		}
-		return this.${classNameLower}DAO;
-	}
+//	public I${className}DAO get${className}DAO() {
+//		if(this.${classNameLower}DAO == null) {
+//			this.${classNameLower}DAO = (I${className}DAO) ApplicationContextHolder.getBean("${classNameLower}DAO");
+//		}
+//		return this.${classNameLower}DAO;
+//	}
 }

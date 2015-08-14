@@ -1,6 +1,1 @@
-import com.alibaba.fastjson.JSONObject;
-import ${basepackage}.${namespace}.entity.${className};
-
 import org.apache.log4j.Logger;
-import java.util.List;
-import java.util.Map;

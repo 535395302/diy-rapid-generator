@@ -12,11 +12,20 @@ define([], function () {
             factory = {};
 
         /** 获取${className}列表 */
-        factory.list = function (vo) {
+        factory.getPageList = function (vo) {
             var d = $q.defer();
             $http.post(serviceBase+'selectPageList',vo)
                 .success(function (response) { d.resolve(response); })
-                .error(function (response) {d.reject(response);});
+                .error  (function (response) { d.reject(response);});
+            return d.promise;
+        }
+
+        /** 获取${className}列表 */
+        factory.getList = function (vo) {
+            var d = $q.defer();
+            $http.post(serviceBase+'selectPageList',vo)
+                .success(function (response) { d.resolve(response); })
+                .error  (function (response) { d.reject(response);});
             return d.promise;
         }
 
@@ -28,7 +37,7 @@ define([], function () {
             var d = $q.defer();
             $http.post(serviceBase+(vo['${clazz.fields[0].fieldName}'] ? 'updateOne' : 'insertOne'), vo)
                 .success(function (response) { d.resolve(response); })
-                .error(function (response) {d.reject(response);});
+                .error  (function (response) { d.reject(response);});
             return d.promise;
         };
 
@@ -40,7 +49,7 @@ define([], function () {
             var d = $q.defer();
             $http.post(serviceBase+'deleteById/' + id)
                 .success(function (response) { d.resolve(response); })
-                .error(function (response) {d.reject(response);});
+                .error  (function (response) { d.reject(response);});
             return d.promise;
         };
 

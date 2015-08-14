@@ -3,13 +3,13 @@
 <#assign classNameLower = className?uncap_first>
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="${basepackage}.${namespace}.entity.${className}">
-	<resultMap id="BaseResultMap" type="${basepackage}.${namespace}.entity.${className}">
+<mapper namespace="${basepackage}.domain.${className}">
+	<resultMap id="BaseResultMap" type="${basepackage}.domain.${className}">
 		<#list clazz.fields as field>
 		<#if field == clazz.fields?first>
-		<id column="${field.fieldName}" property="${field.fieldName}" javaType="${field.javaType}"/>
+		<id column="${field.fieldName}" property="${field.fieldName}" javaType="${field.javaType}" jdbcType="${field.jdbcType}"/>
 		<#else>
-		<result column="${field.fieldName}" property="${field.fieldName}" javaType="${field.javaType}"/>
+		<result column="${field.fieldName}" property="${field.fieldName}" javaType="${field.javaType}" jdbcType="${field.jdbcType}"/>
 		</#if>
 		</#list>
 	</resultMap>
@@ -28,7 +28,7 @@
 		<where>
 			<trim prefixOverrides="and">
 				<#list clazz.fields as field>
-				<if test="${field.fieldName} != null and ${field.fieldName} !=''">  and a.${field.fieldName} = #${"\{"+field.fieldName+"}"}</if>
+				<if test="${field.fieldName} != null and ${field.fieldName} !=''">  and a.${field.fieldName} = #${"\{"+field.fieldName+",jdbcType="+field.jdbcType+"}"}</if>
 				</#list>
 			</trim>
 		</where>
@@ -38,7 +38,7 @@
 		<where>
 			<trim prefixOverrides="and">
 				<#list clazz.fields as field>
-				<if test="${field.fieldName} != null and ${field.fieldName} !=''">  and a.${field.fieldName}  = #${"\{"+field.fieldName+"}"}</if>
+				<if test="${field.fieldName} != null and ${field.fieldName} !=''">  and a.${field.fieldName}  = #${"\{"+field.fieldName+",jdbcType="+field.jdbcType+"}"}</if>
 				</#list>
 			</trim>
 		</where>
@@ -62,13 +62,13 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select <include refid="Base_Column_List" />
 		from <include refid="table" /> a
-		WHERE a.${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+"}"}
+		WHERE a.${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+",jdbcType="+clazz.fields?first.jdbcType+"}"}
 	</select>
 
 	<!-- 根据ID删除 -->
 	<delete id="deleteById" parameterType="java.lang.String">
 		delete from <include refid="table" /> a
-		where a.${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+"}"}
+		where a.${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+",jdbcType="+clazz.fields?first.jdbcType+"}"}
 	</delete>
 
 	<!-- 删除 -->
@@ -78,7 +78,7 @@
 	</delete>
 
 	<!-- 添加 -->
-	<insert id="insert" parameterType="${basepackage}.${namespace}.entity.${className}">
+	<insert id="insert" parameterType="${basepackage}.domain.${className}">
 		INSERT INTO <include refid="table" />(
 		<trim prefixOverrides=",">
 			<#list clazz.fields as field>
@@ -89,7 +89,7 @@
     	VALUES (
 		<trim prefixOverrides=",">
 			<#list clazz.fields as field>
-			, #${"\{"+field.fieldName+"}"}
+			, #${"\{"+field.fieldName+",jdbcType="+field.jdbcType+"}"}
 			</#list>
 		</trim>
 		)
@@ -97,31 +97,31 @@
 
 
 	<!-- 通过ID更新 -->
-	<update id="updateByIdSelective" parameterType="${basepackage}.${namespace}.entity.${className}">
+	<update id="updateByIdSelective" parameterType="${basepackage}.domain.${className}">
 		update <include refid="table" />
 		<set>
 		<trim prefixOverrides=",">
 <#list clazz.fields as field>
 	<#if field!=clazz.fields?first>
-			<if test="${field.fieldName} != null and ${field.fieldName} !=''">, ${field.fieldName} = #${"\{"+field.fieldName+"}"}</if>
+			<if test="${field.fieldName} != null and ${field.fieldName} !=''">, ${field.fieldName} = #${"\{"+field.fieldName+",jdbcType="+field.jdbcType+"}"}</if>
 	</#if>
 </#list>
 		</trim>
 		</set>
-		<where>	${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+"}"}</where>
+		<where>	${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+",jdbcType="+clazz.fields?first.jdbcType+"}"}</where>
 	</update>
 
-	<update id="updateById" parameterType="${basepackage}.${namespace}.entity.${className}">
+	<update id="updateById" parameterType="${basepackage}.domain.${className}">
 		UPDATE <include refid="table" />
 		<set>
 		<trim prefixOverrides=",">
 	<#list clazz.fields as field>
 		<#if field!=clazz.fields?first>
-			,${field.fieldName} = #${"\{"+field.fieldName+"}"}
+			,${field.fieldName} = #${"\{"+field.fieldName+",jdbcType="+field.jdbcType+"}"}
 		</#if>
 	</#list>
 		</trim>
 		</set>
- 		<where> ${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+"}"}  </where>
+ 		<where> ${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+",jdbcType="+clazz.fields?first.jdbcType+"}"}  </where>
 	</update>
 </mapper>

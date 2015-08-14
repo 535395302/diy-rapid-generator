@@ -1,11 +1,10 @@
 <#include "/java_copyright.include">
 <#assign className = clazz.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.service;
+package ${basepackage}.service;
 
-<#include "/java_imports.include">
-import com.ewandian.b2b.common.service.IBaseService;
-import ${basepackage}.${namespace}.domian.vo.${className};
+import ${basepackage}.common.I${namespace?cap_first}CommonService;
+import ${basepackage}.domain.${className};
 
 /**
  * ${className}的业务服务接口
@@ -14,4 +13,4 @@ import ${basepackage}.${namespace}.domian.vo.${className};
  * @date ${now?string("yyyy-MM-dd")}
  * @version 1.0
  */
-public interface I${className}Service extends I${namespace}CommonService<${className}Vo>{}
+public interface I${className}Service extends I${namespace?cap_first}CommonService<${className}>{}
