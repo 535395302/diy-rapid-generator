@@ -1,5 +1,11 @@
 import cn.org.rapid_framework.generator.GeneratorFacade;
 import cn.org.rapid_framework.generator.util.StringHelper;
+import com.ewandian.b2b2c.basic.sys.domain.ChangeLog;
+import com.ewandian.b2b2c.basic.sys.domain.SysObjectType;
+import com.ewandian.b2b2c.erp.purchase.domain.PoReturnDetail;
+import com.ewandian.b2b2c.erp.purchase.domain.PoReturnMaster;
+import com.ewandian.b2b2c.erp.purchase.domain.po.PoDetail;
+import com.ewandian.b2b2c.erp.purchase.domain.po.PoMaster;
 import com.model.*;
 
 /**
@@ -37,7 +43,8 @@ public class Main {
          * 参数1：类
          * 参数2：模板的根目录
          */
-        g.generateByClass(ShopMasterAudit.class,"template_byClass");
+        g.generateByClass(AdjustDetail.class,"template_byClass");
+        //g.generateByClass(SysObjectType.class,"template_byClass");
 
         //g.printAllTableNames();				//打印数据库中的表名称
 

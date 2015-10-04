@@ -11,7 +11,7 @@
 define([], function () {
     var app = angular.module('${basepackage}.${namespace}.${classNameLower}Controller',[]);
     app.controller('${classNameLower}Controller',
-        function ($scope, $rootScope, $modal,$log,$window,${classNameLower}Service) {
+        function ($q,$filter,$scope, $rootScope, $modal,$log,$window,${classNameLower}Service) {
 
             $scope.vo = {};
 
@@ -26,42 +26,37 @@ define([], function () {
                     transport:{
                         read: function(options){
                             var vo = $scope.vo;
-                            vo["pageCount"]=options.data.pageSize;
                             vo["page"]=options.data.page;
+                            vo["pageCount"]=options.data.pageSize;
+                            if (options.data.sort && options.data.sort[0]) {
+                                vo.sorting = options.data.sort[0].field+' '+options.data.sort[0].dir;
+                            }
+                            $scope.lock = true;
                             ${classNameLower}Service.getPageList(vo).then(
-                                function success(response) {options.success(response);}
-                                ,function error(response) {options.error(response);}
-                            );
+                                function (response) {
+                                    Util.result(response,
+                                        function (response) {options.success(response);},
+                                        function (response) {options.error(response);}
+                                    );
+                                }
+                                ,function (response) {options.error(response);}
+                            ).finally(function(){$scope.lock = false;});
                         }
                     },
                     schema:{
-                        data: function (d) {
-                            return d.data.datas;
-                        },
-                        total: function (d) {
-                            return d.data.total;
-                        },
-                        model:{
-                            fields:{
-                            <#list clazz.fields as field>
-                                <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
-                                    <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'boolean'}
-                                <#elseif field.javaType == 'java.lang.String'>
-                                    <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'string'}
-                                <#elseif field.javaType == 'java.lang.Integer'>
-                                    <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'number'}
-                                <#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
-                                    <#if field != clazz.fields?first>,</#if>'${field.fieldName}':{type:'date'}
-                                <#else>
-                                </#if>
-                            </#list>
-                            }
-                        }
+                        data: function (d) { return d.data.datas;},
+                        total: function (d) {return d.data.total;}
                     }
                 },
                 resizable:true,
                 sortable: true,
+                selectable:true,
                 toolbar:kendo.template(angular.element('#gridHeader').html()),
+                dataBound:function(e){
+                    if(e.sender.pager.page() > e.sender.pager.totalPages()){
+                        e.sender.pager.page(e.sender.pager.totalPages());
+                    }
+                },
                 pageable: {
                     input: true,
                     numeric: false,
@@ -80,11 +75,11 @@ define([], function () {
                     }
                 },
                 columns: [<#list clazz.fields as field>                    <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
-                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%",
-                        values: [{ text: "True", value: true },{ text: "False", value: false }]}<#elseif field.javaType == 'java.lang.String'>
-                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%"}<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double'>
-                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%"}<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
-                    {   field: "${field.fieldName}",    title: "${field.fieldName?cap_first}",  width: "10%",   format: "{0: yyyy-MM-dd HH:mm:ss}"}<#else></#if>,</#list>
+                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'boolean'
+                        ,values: [{ text: "是", value: true },{ text: "否", value: false }],title: "${field.remark}"}<#elseif field.javaType == 'java.lang.String'>
+                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'string',title: "${field.remark}"  }<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double' || field.javaType == 'java.math.BigDecimal'>
+                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'number'  ,format:'{0:c}',title: "${field.remark}"  }<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
+                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",title: "${field.remark}"}<#else></#if>,</#list>
                     {   command:[
                             { text: "编辑", click: function (e) {$scope.save${className}(angular.copy(this.dataItem($(e.currentTarget).closest("tr"))));} },
                             { text: "删除", click: function (e) {$scope.remove${className}(this.dataItem($(e.currentTarget).closest("tr")));} }
@@ -94,9 +89,9 @@ define([], function () {
                 ]
             };
 
+            // Reset query conditions
             $scope.reset = function () {
                 $scope.vo = {};
-                $scope.grid.dataSource.read();
             };
 
             //点击查询
@@ -104,40 +99,32 @@ define([], function () {
                 $scope.grid.dataSource.read();
             };
 
-            // ${className} edit
+            // Edit window
             $scope.save${className} = function (obj) {
                 var modalInstance = $modal.open({
                     keyboard: false,
                     backdrop: 'static',
-                    templateUrl: 'resources/erp-${namespace}/views/${className}Edit.html',
+                    templateUrl: 'resources/erp-${namespace}/${className}/views/${className}Edit.html',
                     controller: function ($window,$scope, $modalInstance,entity) {
                         $scope.entity = entity || {} ;
 
                         $scope.validation = {rules: {}, messages: {required:'必填'}};
 
-                        $scope.enable = true;
                         $scope.save = function (obj) {
-                            $scope.enable = false;
                             // 验证通过
                             if( $scope.validator.validate() ){
+                                $scope.lock = true;
                                 ${classNameLower}Service.save(obj).then(
                                     function(response){
-                                        if(response.status===1 || response.status==='ERROR'){
-                                            alert(response.message);
-                                        }else{
-                                            $modalInstance.close(response);
-                                        }
-                                        $scope.enable = true;
+                                        Util.result(response, function (response) {$modalInstance.close(response);});
                                     },function(response){
                                         $window.alert("保存失败：\n" + response ) ;
                                         console.log("保存失败：" , response);
-                                        $scope.enable = true;
                                     }
-                                );
+                                ).finally(function(){$scope.lock = false;});
 
                             }else{
                                 for (var i in $scope.validator._errors) { angular.element('[name="'+i+'"]')[0].focus(); break; }
-                                $scope.enable = true;
                             }
                         };
 
@@ -145,42 +132,36 @@ define([], function () {
                             $modalInstance.dismiss('cancel');
                         };
                     },
-                    size: 'lg',
+                    //size: 'lg',
+                    windowClass:'modal-dialog-width-70',
                     resolve: {
                         entity: function () { return obj; }
                     }
                 });
 
-                modalInstance.result.then(function (data) {
-                    if(data.status===0 || data.status==="OK"){
-                        $scope.search();
-                    }
-                }, function () {
-                    // close model
-                });
+                modalInstance.result.then(function (data) {$scope.search();});
             };
 
-            // ${className} delete
+            // Delete
             $scope.remove${className} = function (obj) {
-                if(obj && obj.${clazz.fields[0].fieldName} && confirm("确定删除吗？")){
-                    ${classNameLower}Service.remove(obj.${clazz.fields?first.fieldName}).then(function (response) {
-                        if(response.status==='OK'||response.status===0){
-                            //$window.alert ("删除成功!");
-                            $scope.grid.dataSource.read();
-                        }else{
-                            $window.alert ("错误:"+response.message);
-                        }
-                    }, function (data, status) {
-                        // error
-                        alert("服务器错误："+status+"\n"+data);
-                    })
+                if(obj && obj['${clazz.fields[0].fieldName}'] && confirm("确定删除吗？")){
+                    ${classNameLower}Service.remove(obj['${clazz.fields[0].fieldName}']).then(function (response) {
+                        Util.result(response,function(response){$scope.search()});
+                    }, function (data) {alert("服务器错误：\n"+data);})
                 }
             };
 
         });
 });
 
-/** // Image upload
+/**
+ * template:'<span class="text-overflow" title="#=model#" ng-bind="dataItem.model"/>'
+ *
+ * template:'#if(undefined!==data.reason){#<span class="text-overflow" title="{{dataItem.reason}}" ng-bind="dataItem.reason"></span>#}#'
+ *
+ * format: "{0: yyyy-MM-dd HH:mm:ss}"        format:'{0:c}'
+ *
+ * // Image upload
  * 'VirtualDirectoryWindow'
  * $scope.imgUrl= $scope.entity['imgId'] ? '/images/'+$scope.entity['imgId'] : undefined ;
  * $scope.uploadImage = function () {

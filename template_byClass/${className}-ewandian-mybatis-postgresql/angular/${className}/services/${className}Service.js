@@ -14,7 +14,7 @@ define([], function () {
         /** 获取${className}列表 */
         factory.getPageList = function (vo) {
             var d = $q.defer();
-            $http.post(serviceBase+'selectPageList',vo)
+            $http.post(serviceBase+'selectPageList',vo||{})
                 .success(function (response) { d.resolve(response); })
                 .error  (function (response) { d.reject(response);});
             return d.promise;
@@ -23,7 +23,7 @@ define([], function () {
         /** 获取${className}列表 */
         factory.getList = function (vo) {
             var d = $q.defer();
-            $http.post(serviceBase+'selectPageList',vo)
+            $http.post(serviceBase+'selectList',vo||{})
                 .success(function (response) { d.resolve(response); })
                 .error  (function (response) { d.reject(response);});
             return d.promise;
@@ -42,7 +42,7 @@ define([], function () {
         };
 
         /**
-         * 删除${className}，级联删除${className}所持Card
+         * 删除${className}
          * @param id 被删除的${classNameLower}的ID
          */
         factory.remove = function (id) {

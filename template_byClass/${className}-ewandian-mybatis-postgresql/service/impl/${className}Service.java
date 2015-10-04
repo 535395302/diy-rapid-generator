@@ -4,9 +4,9 @@
 package ${basepackage}.service.impl;
 
 <#include "/java_imports.include">
-//import com.ewandian.b2b.common.service.impl.BaseService;
-//import ${basepackage}.dao.I${className}Dao;
-import ${basepackage}.validation.I${className}Validation;
+import com.ewandian.b2b.common.dao.IBaseDAO;
+import com.ewandian.common.b2b.entity.Result;
+import com.ewandian.platform.util.JSRValidationUtil;
 import ${basepackage}.domain.${className};
 import ${basepackage}.common.${namespace?cap_first}CommonService;
 import ${basepackage}.service.I${className}Service;
@@ -29,10 +29,7 @@ import java.util.Date;
 //@Service
 public class ${className}Service extends ${namespace?cap_first}CommonService<${className}> implements I${className?cap_first}Service {
 
-    //private I${className}Dao ${classNameLower}Dao;
     private IBaseDAO commonDAO;
-
-    private I${className}Validation ${classNameLower}Validation;
 
     private static Logger logger = Logger.getLogger(${className}Service.class);
 
@@ -46,10 +43,9 @@ public class ${className}Service extends ${namespace?cap_first}CommonService<${c
         entity.set${clazz.fields[0].fieldName?cap_first}(new Date().getTime()+"");
 
         //校验字符串(长度和空)
-        Errors error = new BindException(entity, ${className}.class.getName());
-        this.get${className}Validation().validate(entity, error);
-        if (error.hasErrors()){
-            throw new BusinessException(error);
+        Result result = JSRValidationUtil.validate(entity);
+        if (result.isError()){
+            throw new BusinessException(String.valueOf(result.getMessage()));
         }
     }
 
@@ -65,12 +61,6 @@ public class ${className}Service extends ${namespace?cap_first}CommonService<${c
         return this.commonDAO;
     }
 
-    public I${className}Validation get${className}Validation() {
-        if(this.${classNameLower}Validation == null) {
-            this.${classNameLower}Validation = (I${className}Validation) ApplicationContextHolder.getBean("${classNameLower}Validation");
-        }
-        return ${classNameLower}Validation;
-    }
     public void setCommonDAO(IBaseDAO commonDAO) {
         this.commonDAO = commonDAO;
         this.commonDAO.setSqlNamespace(${className}.class.getName());

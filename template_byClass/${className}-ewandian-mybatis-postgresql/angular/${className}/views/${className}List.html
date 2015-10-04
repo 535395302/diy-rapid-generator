@@ -3,26 +3,26 @@
 <#assign classNameLower = className?uncap_first>
 <div class="container-fluid stand-border" ng-controller="${classNameLower}Controller" ng-init="init()">
 
-    <div class="stand-header">??管理</div>
+    <div class="stand-header">${className}管理</div>
 
     <div class="panel panel-default">
         <div class="panel-heading"><div class="query-header">查询条件</div></div>
 
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="col-md-1 control-label" for="shopname">??名称:</label>
+                <label class="col-md-1 control-label" for="shopname">${className}名称:</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="shopname" name="shopname" ng-model="vo.shopname">
                 </div>
-                <label class="col-md-1 control-label" for="crmname">??名称:</label>
+                <label class="col-md-1 control-label" for="crmname">${className}名称:</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control col-md-2" id="crmname" name="crmname" ng-model="vo.crmname">
                 </div>
-                <label class="col-md-1 control-label" for="shopType">店铺类型:</label>
+                <label class="col-md-1 control-label" for="shopType">${className}类型:</label>
                 <div class="col-md-2">
-                    <select id="shopType" name="shopType" k-ng-model="vo.??"
+                    <select id="shopType" name="shopType" k-ng-model="vo.shopType"
                             kendo-drop-down-list="queryType" k-option-label="'请选择'"
-                            k-data-source="??" k-data-text-field="'??'" k-data-value-field="'??'">
+                            k-data-source="[]" k-data-text-field="'shopType'" k-data-value-field="'shopType'">
                     </select>
                 </div>
             </div>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><div class="grid-header">店铺列表</div></div>
+        <div class="panel-heading"><div class="grid-header">${className}列表</div></div>
         <div kendo-grid="grid" k-options="gridOptions"></div>
         <script id="gridHeader" type="text/kendo-template">
             <button ng-click="save${className}(null)" title="添加" class="k-button"><span class="glyphicon glyphicon-plus"></span>添加</button>

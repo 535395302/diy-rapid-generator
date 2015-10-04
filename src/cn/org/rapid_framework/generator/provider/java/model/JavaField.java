@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.org.rapid_framework.generator.util.typemapping.ActionScriptDataTypesUtils;
+import diy.annos.Remark;
 
 public class JavaField {
 	private Field field;
@@ -37,6 +38,11 @@ public class JavaField {
 		super();
 		this.field = field;
 		this.clazz = clazz;
+	}
+
+	public String getRemark(){
+		Remark rk = field.getAnnotation(Remark.class);
+		return rk==null ? field.getName() : rk.value();
 	}
 
 	public String getFieldName() {

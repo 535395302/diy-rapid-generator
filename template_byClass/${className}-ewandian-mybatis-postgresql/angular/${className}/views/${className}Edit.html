@@ -30,7 +30,7 @@ required data-required-msg="请填写职称!" maxlength="20"
         <#if field != clazz.fields?first>
         <#if field.javaType == 'boolean'>
         <div class="form-group">
-            <label class="col-sm-3 control-label">${field.fieldName?cap_first}:<span class="text-danger">*</span></label>
+            <label class="col-sm-3 control-label">${field.remark}:<span class="text-danger">*</span></label>
             <div class="col-sm-8">
                 <label class="radio-inline">
                     <input type="radio" name="${field.fieldName}" id="inlineRadio1" ng-model="entity.${field.fieldName}" value="Y"> 是
@@ -43,10 +43,10 @@ required data-required-msg="请填写职称!" maxlength="20"
         </div>
             <#else>
         <div class="form-group">
-            <label for="${field.fieldName}" class="col-sm-3 control-label">${field.fieldName?cap_first}:<span class="text-danger">*</span></label>
+            <label for="${field.fieldName}" class="col-sm-3 control-label">${field.remark}:<span class="text-danger">*</span></label>
             <div class="col-sm-8">
-                <input type="text" id="${field.fieldName}" name="${field.fieldName}" class="form-control" ng-model="entity.${field.fieldName}" placeholder="${field.fieldName}"
-                        required data-required-msg="请输入${field.fieldName}">
+                <input type="text" id="${field.fieldName}" name="${field.fieldName}" class="form-control" ng-model="entity.${field.fieldName}" placeholder="${field.remark}"
+                        required data-required-msg="请输入${field.remark}">
                 <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
             </div>
         </div>
@@ -57,6 +57,6 @@ required data-required-msg="请填写职称!" maxlength="20"
     </form>
 </div>
 <div class="modal-footer">
-    <button class="k-button k-button-icontext k-primary" ng-disabled="!enable" ng-click="save(entity)"><span class="k-icon k-update"></span>保存</button>
+    <button class="k-button k-button-icontext k-primary" ng-disabled="lock" ng-click="save(entity)"><span class="k-icon k-update"></span>保存</button>
     <button class="k-button k-button-icontext" ng-click="cancel()"><span class="k-icon k-cancel"></span>关闭</button>
 </div>
