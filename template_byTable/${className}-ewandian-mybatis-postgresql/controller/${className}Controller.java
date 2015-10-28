@@ -1,13 +1,13 @@
 <#include "/java_copyright.include">
-<#assign className = clazz.className>
+<#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
 package ${basepackage}.web;
 
+import ${basepackage}.service.I${className}Service;
 import com.ewandian.b2b.common.service.IBaseService;
-import ${basepackage}.${namespace}.service.I${className}Service;
-import ${basepackage}.${namespace}.common.${namespace?cap_first}CommonWeb;
-import ${basepackage}.${namespace}.domain.${className};
-import ${basepackage}.${namespace}.service.I${className}Service;
+import ${basepackage}.common.${namespace?cap_first}CommonWeb;
+import ${basepackage}.domain.${className};
+import ${basepackage}.service.I${className}Service;
 import com.ewandian.platform.common.ApplicationContextHolder;
 import com.ewandian.common.b2b.entity.Result;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @version 1.0
  */
 @Controller
-@RequestMapping(PathConstants.${className?upper_case}_PATH)
+@RequestMapping("/${classNameLower}")
 public class ${className}Controller extends ${namespace?cap_first}CommonWeb<${className}, ${className}>{
 
     private I${className}Service ${classNameLower}Service;
@@ -34,7 +34,7 @@ public class ${className}Controller extends ${namespace?cap_first}CommonWeb<${cl
 
     @Override
     protected IBaseService<${className}> getBaseService() {
-        return ${classNameLower}Service;
+        return get${className}Service();
     }
 
     public void set${className}Service(I${className}Service ${classNameLower}Service) {

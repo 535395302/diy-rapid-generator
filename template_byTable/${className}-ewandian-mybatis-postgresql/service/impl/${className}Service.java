@@ -1,21 +1,23 @@
 <#include "/java_copyright.include">
-<#assign className = clazz.className>
+<#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.service.impl;
+package ${basepackage}.service.impl;
 
 <#include "/java_imports.include">
 import com.ewandian.b2b.common.dao.IBaseDAO;
 import com.ewandian.common.b2b.entity.Result;
 import com.ewandian.platform.util.JSRValidationUtil;
-import ${basepackage}.${namespace}.domain.${className};
-import ${basepackage}.${namespace}.common.${namespace?cap_first}CommonService;
-import ${basepackage}.${namespace}.service.I${className}Service;
+import ${basepackage}.domain.${className};
+import ${basepackage}.common.${namespace?cap_first}CommonService;
+import ${basepackage}.service.I${className}Service;
 
+import com.ewandian.platform.common.ApplicationContextHolder;
 import com.ewandian.platform.common.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import java.util.UUID;
 import java.util.Date;
 /**
  * ${className}的业务服务实现
@@ -33,15 +35,18 @@ public class ${className}Service extends ${namespace?cap_first}CommonService<${c
 
     @Override
     public void preInsert(${className} entity){
+        // 唯一键约束校验
+//        if (StringUtils.isNotEmpty(entity.get${table.columns[0].sqlName?cap_first}()) && get${className}Validation().isExist(entity)) {
+//            throw new BusinessException(String.format("已有“%s”，请不要重复输入！",entity.getId()));
+//        }
 
-        entity.set${clazz.fields[0].fieldName?cap_first}(new Date().getTime()+"");
+        entity.set${table.columns[0].sqlName?cap_first}(new Date().getTime()+"");
 
         //校验字符串(长度和空)
         Result result = JSRValidationUtil.validate(entity);
         if (result.isError()){
             throw new BusinessException(String.valueOf(result.getMessage()));
         }
-        // TODO 唯一键约束校验
     }
 
     @Override

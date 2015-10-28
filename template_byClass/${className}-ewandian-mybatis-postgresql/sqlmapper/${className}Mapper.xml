@@ -3,8 +3,8 @@
 <#assign classNameLower = className?uncap_first>
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="${basepackage}.domain.${className}">
-	<resultMap id="BaseResultMap" type="${basepackage}.domain.${className}">
+<mapper namespace="${basepackage}.${namespace}.domain.${className}">
+	<resultMap id="BaseResultMap" type="${basepackage}.${namespace}.domain.${className}">
 		<#list clazz.fields as field>
 		<#if field == clazz.fields?first>
 		<id column="${field.fieldName}" property="${field.fieldName}" javaType="${field.javaType}" jdbcType="${field.jdbcType}"/>
@@ -78,7 +78,7 @@
 	</delete>
 
 	<!-- 添加 -->
-	<insert id="insert" parameterType="${basepackage}.domain.${className}">
+	<insert id="insert" parameterType="${basepackage}.${namespace}.domain.${className}">
 		INSERT INTO <include refid="table" />(
 		<trim prefixOverrides=",">
 			<#list clazz.fields as field>
@@ -97,7 +97,7 @@
 
 
 	<!-- 通过ID更新 -->
-	<update id="updateByIdSelective" parameterType="${basepackage}.domain.${className}">
+	<update id="updateByIdSelective" parameterType="${basepackage}.${namespace}.domain.${className}">
 		update <include refid="table" />
 		<set>
 		<trim prefixOverrides=",">
@@ -111,7 +111,7 @@
 		<where>	${clazz.fields?first.fieldName} = #${"\{"+clazz.fields?first.fieldName+",jdbcType="+clazz.fields?first.jdbcType+"}"}</where>
 	</update>
 
-	<update id="updateById" parameterType="${basepackage}.domain.${className}">
+	<update id="updateById" parameterType="${basepackage}.${namespace}.domain.${className}">
 		UPDATE <include refid="table" />
 		<set>
 		<trim prefixOverrides=",">

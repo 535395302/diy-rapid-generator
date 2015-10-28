@@ -1,0 +1,55 @@
+<#include "/macro.include"/>
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
+<div class="container-fluid stand-border" ng-controller="${classNameLower}Controller" ng-init="init()">
+
+    <div class="stand-header">${className}管理</div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><div class="query-header">查询条件</div></div>
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="shopname">${className}名称:</label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="shopname" name="shopname" ng-model="vo.shopname">
+                </div>
+                <label class="col-md-1 control-label" for="crmname">${className}名称:</label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control col-md-2" id="crmname" name="crmname" ng-model="vo.crmname">
+                </div>
+                <label class="col-md-1 control-label" for="shopType">${className}类型:</label>
+                <div class="col-md-2">
+                    <select id="shopType" name="shopType" k-ng-model="vo.shopType"
+                            kendo-drop-down-list="queryType" k-option-label="'请选择'"
+                            k-data-source="[]" k-data-text-field="'shopType'" k-data-value-field="'shopType'">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-11 text-center">
+                    <button type="button" id="submitid" class="btn btn-default" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span> 查询
+                    </button>
+                    <button type="button" id="reset" class="btn btn-default" ng-click="reset()">
+                        <span class="glyphicon glyphicon-remove-sign"></span> 重置
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><div class="grid-header">${className}列表</div></div>
+        <div kendo-grid="grid" k-options="gridOptions"></div>
+        <script id="gridHeader" type="text/kendo-template">
+            <button ng-click="save${className}(null)" title="添加" class="k-button"><span class="glyphicon glyphicon-plus"></span>添加</button>
+        </script>
+
+    </div>
+</div>

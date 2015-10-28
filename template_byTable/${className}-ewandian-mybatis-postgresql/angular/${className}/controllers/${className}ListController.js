@@ -1,5 +1,5 @@
 <#include "/macro.include"/>
-<#assign className = clazz.className>
+<#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
 /**
  * @author：Tian
@@ -74,12 +74,12 @@ define([], function () {
                         refresh: "刷新"
                     }
                 },
-                columns: [<#list clazz.fields as field>                    <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'boolean'
-                        ,values: [{ text: "是", value: true },{ text: "否", value: false }],title: "${field.remark}"}<#elseif field.javaType == 'java.lang.String'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'string',title: "${field.remark}"  }<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double' || field.javaType == 'java.math.BigDecimal'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'number'  ,format:'{0:c}',title: "${field.remark}"  }<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",title: "${field.remark}"}<#else></#if>,</#list>
+                columns: [<#list table.columns as field>                    <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
+                    {   field: "${field.sqlName}"    ,width: "10%"   ,type:'boolean'
+                        ,values: [{ text: "是", value: true },{ text: "否", value: false }],title: "${field.remarks}"}<#elseif field.javaType == 'java.lang.String'>
+                    {   field: "${field.sqlName}"    ,width: "10%"   ,type:'string',title: "${field.remarks}"  }<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double' || field.javaType == 'java.math.BigDecimal'>
+                    {   field: "${field.sqlName}"    ,width: "10%"   ,type:'number'  ,format:'{0:c}',title: "${field.remarks}"  }<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
+                    {   field: "${field.sqlName}"    ,width: "10%"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",title: "${field.remarks}"}<#else></#if>,</#list>
                     {   command:[
                             { text: "编辑", click: function (e) {$scope.save${className}(angular.copy(this.dataItem($(e.currentTarget).closest("tr"))));} },
                             { text: "删除", click: function (e) {$scope.remove${className}(this.dataItem($(e.currentTarget).closest("tr")));} }
@@ -144,8 +144,8 @@ define([], function () {
 
             // Delete
             $scope.remove${className} = function (obj) {
-                if(obj && obj['${clazz.fields[0].fieldName}'] && confirm("确定删除吗？")){
-                    ${classNameLower}Service.remove(obj['${clazz.fields[0].fieldName}']).then(function (response) {
+                if(obj && obj['${table.columns[0].sqlName}'] && confirm("确定删除吗？")){
+                    ${classNameLower}Service.remove(obj['${table.columns[0].sqlName}']).then(function (response) {
                         Util.result(response,function(response){$scope.search()});
                     }, function (data) {alert("服务器错误：\n"+data);})
                 }

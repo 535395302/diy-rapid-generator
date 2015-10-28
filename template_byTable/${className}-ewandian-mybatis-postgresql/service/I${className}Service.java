@@ -1,10 +1,10 @@
 <#include "/java_copyright.include">
-<#assign className = clazz.className>
+<#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.${namespace}.service;
+package ${basepackage}.service;
 
-import ${basepackage}.${namespace}.common.I${namespace?cap_first}CommonService;
-import ${basepackage}.${namespace}.domain.${className};
+import ${basepackage}.common.I${namespace?cap_first}CommonService;
+import ${basepackage}.domain.${className};
 
 /**
  * ${className}的业务服务接口

@@ -1,0 +1,127 @@
+<#include "/macro.include"/>
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${basepackage}.domain.${className}">
+	<resultMap id="BaseResultMap" type="${basepackage}.domain.${className}">
+		<#list table.columns as field>
+		<#if field == table.columns?first>
+		<id column="${field.sqlName}" property="${field.sqlName}" javaType="${field.javaType}" jdbcType="${field.sqlTypeName?upper_case}"/>
+		<#else>
+		<result column="${field.sqlName}" property="${field.sqlName}" javaType="${field.javaType}" jdbcType="${field.sqlTypeName?upper_case}"/>
+		</#if>
+		</#list>
+	</resultMap>
+
+	<sql id="table">${table.sqlName}</sql>
+
+	<sql id="Base_Column_List">
+		<trim prefixOverrides=",">
+		<#list table.columns as field>
+		, a.${field.sqlName}
+		</#list>
+		</trim>
+	</sql>
+
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<#list table.columns as field>
+				<if test="${field.sqlName} != null and ${field.sqlName} !=''">  and a.${field.sqlName} = #${"\{"+field.sqlName+",sqlType="+field.sqlTypeName?upper_case+"}"}</if>
+				</#list>
+			</trim>
+		</where>
+	</sql>
+
+	<sql id="delete_Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<#list table.columns as field>
+				<if test="${field.sqlName} != null and ${field.sqlName} !=''">  and a.${field.sqlName}  = #${"\{"+field.sqlName+",sqlType="+field.sqlTypeName?upper_case+"}"}</if>
+				</#list>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(1)	from <include refid="table" /> a
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select <include refid="Base_Column_List" />
+		from <include refid="table" /> a
+		<include refid="Base_Where_Clause" />
+ 		<include refid="com.ewandian.b2b.common.PagingAndSorting" />
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select <include refid="Base_Column_List" />
+		from <include refid="table" /> a
+		WHERE a.${table.columns?first.sqlName} = #${"\{"+table.columns?first.sqlName+",sqlType="+table.columns?first.sqlTypeName?upper_case+"}"}
+	</select>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from <include refid="table" /> a
+		where a.${table.columns?first.sqlName} = #${"\{"+table.columns?first.sqlName+",sqlType="+table.columns?first.sqlTypeName?upper_case+"}"}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from <include refid="table" /> a
+		<include refid="delete_Base_Where_Clause" />
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="${basepackage}.domain.${className}">
+		INSERT INTO <include refid="table" />(
+		<trim prefixOverrides=",">
+			<#list table.columns as field>
+			, ${field.sqlName}
+			</#list>
+		</trim>
+		)
+    	VALUES (
+		<trim prefixOverrides=",">
+			<#list table.columns as field>
+			, #${"\{"+field.sqlName+",sqlType="+field.sqlTypeName?upper_case+"}"}
+			</#list>
+		</trim>
+		)
+	</insert>
+
+
+	<!-- 通过ID更新 -->
+	<update id="updateByIdSelective" parameterType="${basepackage}.domain.${className}">
+		update <include refid="table" />
+		<set>
+		<trim prefixOverrides=",">
+<#list table.columns as field>
+	<#if field!=table.columns?first>
+			<if test="${field.sqlName} != null and ${field.sqlName} !=''">, ${field.sqlName} = #${"\{"+field.sqlName+",sqlType="+field.sqlTypeName?upper_case+"}"}</if>
+	</#if>
+</#list>
+		</trim>
+		</set>
+		<where>	${table.columns?first.sqlName} = #${"\{"+table.columns?first.sqlName+",sqlType="+table.columns?first.sqlTypeName?upper_case+"}"}</where>
+	</update>
+
+	<update id="updateById" parameterType="${basepackage}.domain.${className}">
+		UPDATE <include refid="table" />
+		<set>
+		<trim prefixOverrides=",">
+	<#list table.columns as field>
+		<#if field!=table.columns?first>
+			,${field.sqlName} = #${"\{"+field.sqlName+",sqlType="+field.sqlTypeName?upper_case+"}"}
+		</#if>
+	</#list>
+		</trim>
+		</set>
+ 		<where> ${table.columns?first.sqlName} = #${"\{"+table.columns?first.sqlName+",sqlType="+table.columns?first.sqlTypeName?upper_case+"}"}  </where>
+	</update>
+</mapper>

@@ -1,11 +1,12 @@
 <#include "/java_copyright.include">
 <#assign className = clazz.className>
 <#assign classNameLower = className?uncap_first>
-package ${basepackage}.domain.po;
+package ${basepackage}.${namespace}.domain;
 
 import com.ewandian.common.b2b.entity.BaseEntity;
 import org.hibernate.validator.constraints.*;
 import com.ewandian.platform.annotation.Label;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Tian
@@ -15,7 +16,7 @@ import com.ewandian.platform.annotation.Label;
 public class ${className} extends BaseEntity {
 <#list clazz.fields as field>
     /** ${field.remark} */
-    <#if field.javaType == 'java.lang.String'>@NotEmpty@Length(max = 15)<#else>@NotNull</#if>@Label("${className}.${field.fieldName}")
+    <#if field.javaType == 'java.lang.String'>@NotEmpty@Length(max = ${field.maxLength})<#else>@NotNull</#if>@Label("${className}.${field.fieldName}")
     private ${field.javaType} ${field.fieldName};
 
 </#list>
