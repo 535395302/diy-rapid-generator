@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.org.rapid_framework.generator.util.typemapping.ActionScriptDataTypesUtils;
+import diy.annos.MaxLength;
 import diy.annos.Remark;
 
 public class JavaField {
@@ -18,6 +19,7 @@ public class JavaField {
 		_types.put( "java.lang.Byte"		,"TINYINT"		);
 		_types.put( "java.lang.Short"		,"SMALLINT"		);
 		_types.put( "java.lang.Integer"		,"INTEGER"		);
+		_types.put( "int"		,"INTEGER"		);
 		_types.put( "java.lang.Long"		,"BIGINT"		);
 		_types.put( "java.lang.Float"		,"REAL"			);
 		_types.put( "java.lang.Double"		,"DOUBLE"		);
@@ -43,6 +45,14 @@ public class JavaField {
 	public String getRemark(){
 		Remark rk = field.getAnnotation(Remark.class);
 		return rk==null ? field.getName() : rk.value();
+	}
+
+	public Integer getMaxLength(){
+		if(field.getType().equals(String.class)){
+			MaxLength rk = field.getAnnotation(MaxLength.class);
+			return rk==null ? 99 : rk.value();
+		}
+		return null;
 	}
 
 	public String getFieldName() {
