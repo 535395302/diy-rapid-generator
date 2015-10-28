@@ -67,7 +67,15 @@ public class Table {
 	}
 	public void setSqlName(String sqlName) {
 		this.sqlName = sqlName;
-		className = StringHelper.makeAllWordFirstLetterUpperCase(StringHelper.toUnderscoreName(getSqlName()));
+		String[] s = getSqlName().split("_");
+		String name = s[s.length-1];
+		if(name.endsWith("master")){
+			name = name.replace("master","Master");
+		}
+		if(name.endsWith("detail")){
+			name = name.replace("detail","Detail");
+		}
+		className = String.valueOf(name.charAt(0)).toUpperCase()+name.substring(1);
 	}
 	/** 数据库中表的表备注 */
 	public String getRemarks() {
