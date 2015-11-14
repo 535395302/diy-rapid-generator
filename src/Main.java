@@ -1,12 +1,8 @@
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import cn.org.rapid_framework.generator.util.StringHelper;
-import com.ewandian.b2b2c.basic.sys.domain.ChangeLog;
-import com.ewandian.b2b2c.basic.sys.domain.SysObjectType;
-import com.ewandian.b2b2c.erp.purchase.domain.PoReturnDetail;
-import com.ewandian.b2b2c.erp.purchase.domain.PoReturnMaster;
-import com.ewandian.b2b2c.erp.purchase.domain.po.PoDetail;
-import com.ewandian.b2b2c.erp.purchase.domain.po.PoMaster;
-import com.model.*;
+import com.ewandian.b2b2c.basic.sys.domain.Message;
+import com.ewandian.b2b2c.erp.logistics.domain.FreightType;
+import com.ewandian.b2b2c.erp.logistics.domain.ShipFreight;
+import com.ewandian.b2b2c.erp.logistics.domain.ShipOrderTrack;
 
 /**
  * Created by tian on 14/12/20.
@@ -28,7 +24,7 @@ public class Main {
      * generator.properties 文件中的所有属性,直接引用,没有前缀
      * gg : 模板控制变量, cn.org.rapid_framework.generator.GeneratorControl
      */
-    public static void main(String... args) throws Exception {
+    public static void main(String[] args) throws Exception {
         /**
          * TODO 注意：
          * 1）clazz类的package需要含有".",不然会报一个字符串数组越界异常。因为有句代码是要以最后一个点号为offset切割类的包名。
@@ -43,7 +39,7 @@ public class Main {
          * 参数1：类
          * 参数2：模板的根目录
          */
-        g.generateByClass(AdjustDetail.class,"template_byClass");
+        g.generateByClass(ShipFreight.class,"template_byClass");
         //g.generateByClass(SysObjectType.class,"template_byClass");
 
         //g.printAllTableNames();				//打印数据库中的表名称
@@ -63,11 +59,11 @@ public class Main {
          *   PRIMARY KEY (`user_id`)
          * ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
          */
-        //g.generateByTable("user_info","template_byTable");	//通过数据库表生成文件
+//        g.generateByTable("TLms_D_ShipMaster","template_byTable");	//通过数据库表生成文件
 
         //其他方式
         //g.generateByAllTable("template");	//自动搜索数据库中的所有表并生成文件,template为模板的根目录
-        //g.deleteByTable("table_name", "template"); //删除生成的文件
+//        g.deleteByTable("table_name", "template"); //删除生成的文件
 
         // 打开文件夹
         // String outRoot = GeneratorProperties.getProperty("outRoot");

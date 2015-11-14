@@ -75,11 +75,11 @@ define([], function () {
                     }
                 },
                 columns: [<#list clazz.fields as field>                    <#if field.javaType == 'boolean'||field.javaType=='java.lang.Boolean'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'boolean'
+                    {   field: "${field.fieldName}"    ,width: "100px"   ,type:'boolean'
                         ,values: [{ text: "是", value: true },{ text: "否", value: false }],title: "${field.remark}"}<#elseif field.javaType == 'java.lang.String'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'string',title: "${field.remark}"  }<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double' || field.javaType == 'java.math.BigDecimal'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'number'  ,format:'{0:c}',title: "${field.remark}"  }<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
-                    {   field: "${field.fieldName}"    ,width: "10%"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",title: "${field.remark}"}<#else></#if>,</#list>
+                    {   field: "${field.fieldName}"    ,width: "100px"   ,type:'string',attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} }}"},title: "${field.remark}"  }<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double' || field.javaType == 'java.math.BigDecimal'>
+                    {   field: "${field.fieldName}"    ,width: "100px"   ,type:'number'  ,format:'{0:c}',attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} | currency:'￥ ' }}"},title: "${field.remark}"  }<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
+                    {   field: "${field.fieldName}"    ,width: "100px"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} | date:'yyyy-MM-dd HH:mm:ss' }}"},title: "${field.remark}"}<#else></#if>,</#list>
                     {   command:[
                             { text: "编辑", click: function (e) {$scope.save${className}(angular.copy(this.dataItem($(e.currentTarget).closest("tr"))));} },
                             { text: "删除", click: function (e) {$scope.remove${className}(this.dataItem($(e.currentTarget).closest("tr")));} }
@@ -105,33 +105,7 @@ define([], function () {
                     keyboard: false,
                     backdrop: 'static',
                     templateUrl: 'resources/erp-${namespace}/${className}/views/${className}Edit.html',
-                    controller: function ($window,$scope, $modalInstance,entity) {
-                        $scope.entity = entity || {} ;
-
-                        $scope.validation = {rules: {}, messages: {required:'必填'}};
-
-                        $scope.save = function (obj) {
-                            // 验证通过
-                            if( $scope.validator.validate() ){
-                                $scope.lock = true;
-                                ${classNameLower}Service.save(obj).then(
-                                    function(response){
-                                        Util.result(response, function (response) {$modalInstance.close(response);});
-                                    },function(response){
-                                        $window.alert("保存失败：\n" + response ) ;
-                                        console.log("保存失败：" , response);
-                                    }
-                                ).finally(function(){$scope.lock = false;});
-
-                            }else{
-                                for (var i in $scope.validator._errors) { angular.element('[name="'+i+'"]')[0].focus(); break; }
-                            }
-                        };
-
-                        $scope.cancel = function () {
-                            $modalInstance.dismiss('cancel');
-                        };
-                    },
+                    controller: 'add${classNameLower}Controller',
                     //size: 'lg',
                     windowClass:'modal-dialog-width-70',
                     resolve: {

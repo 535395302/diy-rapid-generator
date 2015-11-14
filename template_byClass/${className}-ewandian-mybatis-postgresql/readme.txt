@@ -20,7 +20,8 @@
 |           uiSref:         app.${namespace}.${classNameLower}
             url:            /${classNameLower}
             controllers:
-                            ["resources/erp-${namespace}/${className}/controllers/${className}ListController.js"]
+                            ["resources/erp-${namespace}/${className}/controllers/${className}ListController.js"
+                            ,"resources/erp-${namespace}/${className}/controllers/add${className}Controller.js"]
             services:
                             ["resources/erp-${namespace}/${className}/services/${className}Service.js"]
 

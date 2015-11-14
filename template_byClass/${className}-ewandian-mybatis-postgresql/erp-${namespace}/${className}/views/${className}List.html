@@ -10,21 +10,29 @@
 
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="col-md-1 control-label" for="shopname">${className}名称:</label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="shopname" name="shopname" ng-model="vo.shopname">
-                </div>
-                <label class="col-md-1 control-label" for="crmname">${className}名称:</label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control col-md-2" id="crmname" name="crmname" ng-model="vo.crmname">
-                </div>
-                <label class="col-md-1 control-label" for="shopType">${className}类型:</label>
-                <div class="col-md-2">
-                    <select id="shopType" name="shopType" k-ng-model="vo.shopType"
-                            kendo-drop-down-list="queryType" k-option-label="'请选择'"
-                            k-data-source="[]" k-data-text-field="'shopType'" k-data-value-field="'shopType'">
-                    </select>
-                </div>
+                <#list clazz.fields as field>
+                    <#if field != clazz.fields?first>
+                        <#if field.javaType == 'boolean'>
+                                <label class="col-sm-1 control-label">${field.remark}:<span class="text-danger">*</span></label>
+                                <div class="col-sm-3">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="${field.fieldName}" id="inlineRadio1" ng-model="entity.${field.fieldName}" value="Y"> 是
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="${field.fieldName}" id="inlineRadio2" ng-model="entity.${field.fieldName}" value="N"> 不是
+                                    </label>
+                                    <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
+                                </div>
+                            <#else>
+                                <label for="${field.fieldName}" class="col-sm-1 control-label">${field.remark}:<span class="text-danger">*</span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" id="${field.fieldName}" name="${field.fieldName}" class="form-control" ng-model="entity.${field.fieldName}" placeholder="${field.remark}"
+                                           required data-required-msg="请输入${field.remark}">
+                                    <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
+                                </div>
+                        </#if>
+                    </#if>
+                </#list>
             </div>
 
             <div class="form-group">

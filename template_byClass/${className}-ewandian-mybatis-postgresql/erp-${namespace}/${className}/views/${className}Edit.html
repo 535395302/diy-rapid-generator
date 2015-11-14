@@ -4,26 +4,7 @@
 <div class="modal-header">
     <h3 class="modal-title">${className}{{entity.${clazz.fields?first.fieldName} ? '更新':'新增'}}</h3>
 </div>
-<!--
-<span class="text-danger">*</span>
-required data-required-msg="请填写职称!" maxlength="20"
 
-<button class="btn btn-default btn-sm" ng-click=""><span class="glyphicon glyphicon-user"></span>按钮</button>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">职称Logo:</label>
-            <div class="col-md-3 col-md-offset-1">
-                <button class="k-button" ng-click="uploadImage()"><span class="glyphicon glyphicon-picture"></span>上传图标Logo</button>
-            </div>
-            <div class="col-md-4">
-                <img ng-show="entity.imgId" style="max-height: 80px;" ng-src="{{imgUrl}}" alt="Logo"/>
-            </div>
-        </div>
-
-        kendo-numeric-text-box k-min="0"
-
-        kendo-drop-down-list k-data-source="YesOrNos" k-data-text-field="'name'" k-data-value-field="'id'" k-option-label="'请选择'"
--->
 <div class="modal-body">
     <form class="form-horizontal" role="form" kendo-validator="validator"  k-options="validation">
     <#list clazz.fields as field>

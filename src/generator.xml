@@ -15,8 +15,8 @@
 	<!--<entry key="outRoot">.\generator-output</entry>-->
 	<entry key="outRoot">generator-output</entry>
 
-	<entry key="jdbc.username">root</entry>
-	<entry key="jdbc.password"></entry>
+	<entry key="jdbc.username">ewandianerp</entry>
+	<entry key="jdbc.password">ewandianerp</entry>
 		
 	<!-- oracle需要指定jdbc.schema,其它数据库忽略此项配置
 	<entry key="jdbc.schema"></entry>
@@ -35,9 +35,10 @@
 	<entry key="jdbc.url">jdbc:h2:tcp://localhost/test</entry>
 	<entry key="jdbc.driver">org.h2.Driver</entry>
 	-->
-	<!-- Mysql -->
+	<!-- Mysql
 	<entry key="jdbc.url">jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
+	 -->
 
 
 	<!-- Oracle
@@ -61,10 +62,10 @@
 	-->
 
 	<!-- PostgreSql
-	<entry key="jdbc.url">jdbc:postgresql://localhost/[database]</entry>
-	<entry key="jdbc.driver">org.postgresql.Driver</entry>
 	 -->
-	
+	<entry key="jdbc.url">jdbc:postgresql://192.168.1.161:5432/logistics?characterEncoding=UTF-8</entry>
+	<entry key="jdbc.driver">org.postgresql.Driver</entry>
+
 	<!-- Sybase
 	<entry key="jdbc.url">jdbc:sybase:Tds:localhost:5007/[database]</entry>
 	<entry key="jdbc.driver">com.sybase.jdbc.SybDriver</entry>

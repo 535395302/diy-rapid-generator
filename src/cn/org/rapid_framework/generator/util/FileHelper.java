@@ -111,7 +111,7 @@ public class FileHelper {
 	public static  Set binaryExtentionsList = new HashSet();
 	static {
 		loadBinaryExtentionsList("binary_filelist.txt",true);
-	    loadBinaryExtentionsList("cn/org/rapid_framework/generator/util/binary_filelist.txt",false);
+	    loadBinaryExtentionsList("cn/org/rapid_framework/generator/util/binary_filelist.txt",true);
 	}
 	
 	public static void loadBinaryExtentionsList(String resourceName,boolean ignoreException) {
