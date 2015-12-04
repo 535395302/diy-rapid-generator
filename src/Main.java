@@ -4,6 +4,9 @@ import com.ewandian.b2b2c.erp.logistics.domain.FreightType;
 import com.ewandian.b2b2c.erp.logistics.domain.ShipFreight;
 import com.ewandian.b2b2c.erp.logistics.domain.ShipOrderTrack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by tian on 14/12/20.
  */
@@ -39,11 +42,11 @@ public class Main {
          * 参数1：类
          * 参数2：模板的根目录
          */
-        g.generateByClass(ShipFreight.class,"template_byClass");
+        //g.generateByClass(ShipFreight.class,"template_byClass");
         //g.generateByClass(SysObjectType.class,"template_byClass");
-
         //g.printAllTableNames();				//打印数据库中的表名称
 
+        //byMap(g);
         /**
          * 参数1：数据表名
          * 参数2：模板的根目录
@@ -71,5 +74,19 @@ public class Main {
         //Runtime.getRuntime().exec("open " + new File(outRoot).getAbsolutePath());
         // Window OS:打开文件夹
         //Runtime.getRuntime().exec("cmd.exe /c start "+GeneratorProperties.getRequiredProperty("outRoot"));
+    }
+
+    private static void byMap(GeneratorFacade g) throws Exception {
+        Map map = new HashMap();
+
+//        map.put("id","TV");map.put("name","电视");
+//        map.put("id","CW");map.put("name","厨卫");
+//        map.put("id","BX");map.put("name","冰洗");
+//        map.put("id","KT");map.put("name","空调");
+//        map.put("id","XD");map.put("name","小电");
+        map.put("id","3C");
+        map.put("name","3C");
+
+        g.generateByMap(map,"template_byMap");
     }
 }
