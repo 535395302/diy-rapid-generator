@@ -19,7 +19,7 @@
         <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
         <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
         <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-        <userTask id="usertask2" name="采购总监审核" activiti:async="true" activiti:candidateGroups="CFO" activiti:formKey="task2">
+        <userTask id="usertask2" name="采购总监审核" activiti:async="true" activiti:candidateGroups="CPO" activiti:formKey="task2">
             <documentation>${name}采购申请/采购总监审核: 审核由 ${"$"}{initiator} 发起的${name}采购申请,供应商:${"$"}{venderName}</documentation>
             <extensionElements>
                 <activiti:formProperty id="audit" name="审核结果" type="enum" required="true">

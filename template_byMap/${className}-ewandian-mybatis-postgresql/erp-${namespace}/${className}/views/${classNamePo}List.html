@@ -1,0 +1,62 @@
+<#include "/macro.include"/>
+
+<div class="container-fluid stand-border" ng-controller="${classNameLower}Controller" ng-init="init()">
+
+    <div class="stand-header">${className}管理</div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><div class="query-header">查询条件</div></div>
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <#list fields as field>
+                    <#if field_index==0>
+                        <#if field.javaType == 'boolean'>
+                                <label class="col-sm-1 control-label">${field.remark}:<span class="text-danger">*</span></label>
+                                <div class="col-sm-3">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="${field.fieldName}" id="inlineRadio1" ng-model="entity.${field.fieldName}" value="Y"> 是
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="${field.fieldName}" id="inlineRadio2" ng-model="entity.${field.fieldName}" value="N"> 不是
+                                    </label>
+                                    <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
+                                </div>
+                            <#else>
+                                <label for="${field.fieldName}" class="col-sm-1 control-label">${field.remark}:<span class="text-danger">*</span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" id="${field.fieldName}" name="${field.fieldName}" class="form-control" ng-model="entity.${field.fieldName}" placeholder="${field.remark}"
+                                           required data-required-msg="请输入${field.remark}">
+                                    <span class="k-invalid-msg" data-for="${field.fieldName}"></span>
+                                </div>
+                        </#if>
+                    </#if>
+                </#list>
+            </div>
+
+            <div class="form-group">
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-11 text-center">
+                    <button type="button" id="submitid" class="btn btn-default" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span> 查询
+                    </button>
+                    <button type="button" id="reset" class="btn btn-default" ng-click="reset()">
+                        <span class="glyphicon glyphicon-remove-sign"></span> 重置
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><div class="grid-header">${className}列表</div></div>
+        <div kendo-grid="grid" k-options="gridOptions"></div>
+        <script id="gridHeader" type="text/kendo-template">
+            <button ng-click="save${className}(null)" title="添加" class="k-button"><span class="glyphicon glyphicon-plus"></span>添加</button>
+        </script>
+
+    </div>
+</div>
