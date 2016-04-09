@@ -12,7 +12,11 @@ define([], function () {
             factory = {};
 
         factory.request = function (path,vo,httpMethod) {
-            return $http[httpMethod||'post'](serviceBase+'path',vo||{});
+            var d = $q.defer();
+            $http[httpMethod||'post'](serviceBase+path,vo||{})
+                .success(function (response) {d.resolve(response);})
+                .error(function (response) {d.reject(response);});
+            return d.promise;
         };
 
         return factory;
