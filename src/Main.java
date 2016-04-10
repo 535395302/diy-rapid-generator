@@ -38,7 +38,8 @@ public class Main {
     }
 
     private static void byMap(GeneratorFacade g) throws Exception {
-        Map map = ByMapUtils.analysisSqlFile("F:\\Tian\\Code\\Git\\diy-rapid-generator\\src\\src.sql");
+        System.err.println(System.getProperty("user.dir"));
+        Map map = ByMapUtils.analysisSqlFile(System.getProperty("user.dir")+"\\src\\src.sql");
         g.generateByMap(map,"template_byMap");
     }
 }

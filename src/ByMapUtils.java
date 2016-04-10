@@ -75,8 +75,8 @@ public class ByMapUtils {
         String tableName = getTableName(line);
         map.put("tableName", tableName);
         final String className = getClassNameFromTableName(tableName);
-        map.put("className", className+"Vo");
-        map.put("classNamePo", className);
+        map.put("className", className);
+        map.put("classNameVo", className+"Vo");
         map.put("classNameLower", lowerFirst(className));
         // 按逗号[,]或[(]开括号切割字符
         final List<String> strs = Splitter.on(Pattern.compile("(\\s\\(\\n\\s\\s\\s)|,\\n|\\n\\);")).trimResults().omitEmptyStrings().splitToList(line);
