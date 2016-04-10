@@ -78,13 +78,7 @@ define([], function () {
                         ,values: [{ text: "是", value: true },{ text: "否", value: false }],title: "${field.remark}"}<#elseif field.javaType == 'java.lang.String'>
                     {   field: "${field.fieldName}"    ,width: "100px"   ,type:'string',attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} }}"},title: "${field.remark}"  }<#elseif field.javaType == 'java.lang.Integer' || field.javaType == 'java.lang.Double' || field.javaType == 'java.math.BigDecimal'>
                     {   field: "${field.fieldName}"    ,width: "100px"   ,type:'number'  ,format:'{0:c}',attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} | currency:'￥ ' }}"},title: "${field.remark}"  }<#elseif field.javaType == 'java.util.Date' || field.javaType == 'java.sql.Timestamp'>
-                    {   field: "${field.fieldName}"    ,width: "100px"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} | date:'yyyy-MM-dd HH:mm:ss' }}"},title: "${field.remark}"}<#else></#if>,</#list>
-                    {   command:[
-                            { text: "编辑", click: function (e) {$scope.save${className}(angular.copy(this.dataItem($(e.currentTarget).closest("tr"))));} },
-                            { text: "删除", click: function (e) {$scope.remove${className}(this.dataItem($(e.currentTarget).closest("tr")));} }
-                        ],
-                        title: "操作", width: "15%"
-                    }
+                    {   field: "${field.fieldName}"    ,width: "100px"   ,type:'date'    ,format: "{0: yyyy-MM-dd HH:mm:ss}",attributes:{"class": "text-overflow","title":"{{ dataItem.${field.fieldName} | date:'yyyy-MM-dd HH:mm:ss' }}"},title: "${field.remark}"}<#else></#if><#if field_index!=fields?size-1>,</#if></#list>
                 ]
             };
 
@@ -103,8 +97,8 @@ define([], function () {
                 var modalInstance = $modal.open({
                     keyboard: false,
                     backdrop: 'static',
-                    templateUrl: 'resources/erp-${namespace}/${className}/views/${className}Edit.html',
-                    controller: 'add${classNameLower}Controller',
+                    templateUrl: 'resources/erp-${namespace}/${classNamePo}/views/${classNamePo}Edit.html',
+                    controller: 'add${classNamePo}Controller',
                     //size: 'lg',
                     windowClass:'modal-dialog-width-70',
                     resolve: {

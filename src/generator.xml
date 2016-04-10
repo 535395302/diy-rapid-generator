@@ -8,9 +8,9 @@
 	</comment>
 	
 	<!--<entry key="basepackage">com.ewandian.b2b2c.erp.purchase</entry>-->
-	<entry key="basepackage">com.ewandian.b2b2c.basic</entry>
+	<entry key="basepackage">com.ewandian.b2b2c.erp</entry>
 
-	<entry key="namespace">sys</entry>
+	<entry key="namespace">wh</entry>
 
 	<!--<entry key="outRoot">.\generator-output</entry>-->
 	<entry key="outRoot">generator-output</entry>

@@ -7,8 +7,8 @@
 "use strict";
 
 define([], function () {
-    var app = angular.module('${basepackage}.${namespace}.add${classNameLower}Controller',[]);
-    app.controller('add${classNameLower}Controller',
+    var app = angular.module('${basepackage}.${namespace}.add${classNamePo}Controller',[]);
+    app.controller('add${classNamePo}Controller',
         function ($q,$filter,$scope, $rootScope, $modal,$log,$window,${classNameLower}Service, $modalInstance,entity) {
 
 

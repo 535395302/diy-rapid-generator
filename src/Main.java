@@ -1,10 +1,6 @@
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import com.ewandian.b2b2c.basic.sys.domain.Message;
-import com.ewandian.b2b2c.erp.logistics.domain.FreightType;
-import com.ewandian.b2b2c.erp.logistics.domain.ShipFreight;
-import com.ewandian.b2b2c.erp.logistics.domain.ShipOrderTrack;
+import com.google.common.collect.Maps;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,55 +34,12 @@ public class Main {
         GeneratorFacade g = new GeneratorFacade();
         g.deleteOutRootDir();							//删除生成器的输出目录
 
-        /* 通过类生成文件
-         * 参数1：类
-         * 参数2：模板的根目录
-         */
-        //g.generateByClass(ShipFreight.class,"template_byClass");
-        //g.generateByClass(SysObjectType.class,"template_byClass");
-        //g.printAllTableNames();				//打印数据库中的表名称
+        byMap(g);
 
-        //byMap(g);
-        /**
-         * 参数1：数据表名
-         * 参数2：模板的根目录
-         * use test;
-         * drop table if exists `user_info`;
-         * CREATE TABLE `user_info` (
-         *   `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-         *   `username` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
-         *   `password` varchar(50) DEFAULT NULL COMMENT '密码',
-         *   `birth_date` date DEFAULT NULL,
-         *   `sex` int(11) DEFAULT NULL,
-         *   `age` int(11) DEFAULT NULL,
-         *   PRIMARY KEY (`user_id`)
-         * ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-         */
-//        g.generateByTable("TLms_D_ShipMaster","template_byTable");	//通过数据库表生成文件
-
-        //其他方式
-        //g.generateByAllTable("template");	//自动搜索数据库中的所有表并生成文件,template为模板的根目录
-//        g.deleteByTable("table_name", "template"); //删除生成的文件
-
-        // 打开文件夹
-        // String outRoot = GeneratorProperties.getProperty("outRoot");
-        // Mac OS: 打开文件夹
-        //Runtime.getRuntime().exec("open " + new File(outRoot).getAbsolutePath());
-        // Window OS:打开文件夹
-        //Runtime.getRuntime().exec("cmd.exe /c start "+GeneratorProperties.getRequiredProperty("outRoot"));
     }
 
     private static void byMap(GeneratorFacade g) throws Exception {
-        Map map = new HashMap();
-
-//        map.put("id","TV");map.put("name","电视");
-//        map.put("id","CW");map.put("name","厨卫");
-//        map.put("id","BX");map.put("name","冰洗");
-//        map.put("id","KT");map.put("name","空调");
-//        map.put("id","XD");map.put("name","小电");
-        map.put("id","3C");
-        map.put("name","3C");
-
+        Map map = ByMapUtils.analysisSqlFile("F:\\Tian\\Code\\Git\\diy-rapid-generator\\src\\src.sql");
         g.generateByMap(map,"template_byMap");
     }
 }
