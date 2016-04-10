@@ -1,5 +1,4 @@
 import cn.org.rapid_framework.generator.GeneratorFacade;
-import com.google.common.collect.Maps;
 
 import java.util.Map;
 
