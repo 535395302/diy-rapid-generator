@@ -1,0 +1,12 @@
+<bean id="${business}${task?cap_first}Service" class="${basePkg}.${business}.${task}.${business?cap_first}${task?cap_first}Service" scope="prototype">
+    <property name="builder">
+        <bean id="${business}${task?cap_first}Builder" class="${basePkg}.${business}.${task}.${business?cap_first}${task?cap_first}Builder" scope="prototype">
+        </bean>
+    </property>
+    <property name="validation">
+        <bean id="${business}${task?cap_first}Validation" class="${basePkg}.${business}.${task}.${business?cap_first}${task?cap_first}Validation" scope="prototype"/>
+    </property>
+</bean>
+
+
+<parameters id="${business}.${task}" extend=""></parameters>
